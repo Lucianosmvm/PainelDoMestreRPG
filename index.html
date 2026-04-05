@@ -1,0 +1,1961 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover"/>
+<meta name="theme-color" content="#c0392b"/>
+<meta name="mobile-web-app-capable" content="yes"/>
+<meta name="apple-mobile-web-app-capable" content="yes"/>
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent"/>
+<meta name="apple-mobile-web-app-title" content="Painel do Mestre RPG"/>
+<meta name="description" content="Organizador de campanhas para mestres de Painel do Mestre RPG RPG"/>
+<link rel="manifest" href="manifest.json"/>
+<link rel="apple-touch-icon" href="icons/icon-192.png"/>
+<title>Painel do Mestre RPG — Painel do Mestre RPG RPG</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"/>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,700;0,900;1,700&family=Share+Tech+Mono&display=swap" rel="stylesheet"/>
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{background:#0c0b09;color:#d6d0c4;font-family:'Share Tech Mono','Courier New',monospace;min-height:100vh}
+::-webkit-scrollbar{width:6px}::-webkit-scrollbar-track{background:#0c0b09}::-webkit-scrollbar-thumb{background:#302c24;border-radius:3px}
+@keyframes fadeUp{from{opacity:0;transform:translateY(14px)}to{opacity:1;transform:translateY(0)}}
+@keyframes fadeIn{from{opacity:0}to{opacity:1}}
+.fade-up{animation:fadeUp .3s ease both}.fade-in{animation:fadeIn .2s ease both}
+a{color:inherit;text-decoration:none}
+input,textarea,select{background:#0c0b09;border:1px solid #2c2820;color:#d6d0c4;font-family:'Share Tech Mono',monospace;font-size:16px;outline:none;padding:12px 14px;border-radius:3px;width:100%;transition:border-color .2s;box-sizing:border-box;-webkit-appearance:none}
+input:focus,textarea:focus,select:focus{border-color:#c0392b}
+input::placeholder,textarea::placeholder{color:#7a7060}
+textarea{resize:vertical;line-height:1.6;font-size:15px}
+select option{background:#141210}
+button{cursor:pointer;font-family:'Share Tech Mono',monospace;border:none;outline:none;transition:all .15s}
+
+/* ── BUTTONS ── */
+.btn-primary{background:#c0392b;color:#fff;padding:12px 20px;border-radius:3px;font-size:13px;letter-spacing:.08em;text-transform:uppercase;font-weight:700;display:inline-flex;align-items:center;gap:8px;min-height:48px;-webkit-tap-highlight-color:transparent}
+.btn-primary:hover{background:#a93226}
+.btn-primary:active{background:#8e2419;transform:scale(.97)}
+.btn-ghost{background:none;border:1px solid #2c2820;color:#7a7060;padding:10px 16px;border-radius:3px;font-size:12px;letter-spacing:.08em;text-transform:uppercase;display:inline-flex;align-items:center;gap:6px;min-height:44px;-webkit-tap-highlight-color:transparent}
+.btn-ghost:hover{border-color:#d6d0c4;color:#d6d0c4}
+.btn-ghost:active{background:#1a1814;transform:scale(.97)}
+.btn-del{background:none;border:1px solid transparent;color:#7a7060;font-size:16px;width:44px;height:44px;border-radius:3px;display:inline-flex;align-items:center;justify-content:center;flex-shrink:0;-webkit-tap-highlight-color:transparent}
+.btn-del:hover{border-color:#c0392b;color:#c0392b;background:#7f1d1d22}
+.btn-del:active{background:#7f1d1d44;transform:scale(.9)}
+.btn-add{background:none;border:1px dashed #302c24;color:#7a7060;width:100%;padding:14px;border-radius:3px;font-size:13px;letter-spacing:.08em;text-transform:uppercase;display:flex;align-items:center;justify-content:center;gap:6px;min-height:48px;-webkit-tap-highlight-color:transparent}
+.btn-add:hover{border-color:#276749;color:#276749}
+.btn-add:active{background:#27674915;transform:scale(.98)}
+.btn-tab{white-space:nowrap;padding:10px 16px;background:none;border:1px solid #2c2820;color:#7a7060;font-size:12px;letter-spacing:.06em;text-transform:uppercase;border-radius:3px;flex-shrink:0;min-height:44px;-webkit-tap-highlight-color:transparent}
+.btn-tab:hover{border-color:#b8860b;color:#b8860b}
+.btn-tab.active{border-color:#c0392b;color:#c0392b;background:#7f1d1d22}
+.btn-tab:active{transform:scale(.96)}
+.btn-green{background:none;border:1px solid #276749;color:#4ade80;padding:10px 14px;border-radius:3px;font-size:11px;letter-spacing:.06em;text-transform:uppercase;display:inline-flex;align-items:center;gap:5px;min-height:44px;-webkit-tap-highlight-color:transparent}
+.btn-green:hover{background:#27674922}
+.btn-green:active{background:#27674933;transform:scale(.97)}
+
+/* ── LAYOUT ── */
+.topbar{border-bottom:1px solid #2c2820;padding:0 24px;background:#141210;position:sticky;top:0;z-index:50;display:flex;align-items:center;height:54px;gap:14px}
+.logo-icon{width:28px;height:28px;border-radius:2px;background:#c0392b20;border:1px solid #c0392b44;display:flex;align-items:center;justify-content:center;font-size:14px;flex-shrink:0}
+.logo-text{font-family:'Playfair Display',Georgia,serif;font-size:16px;color:#ede8dc;font-weight:700;letter-spacing:.03em}
+.main{max-width:920px;margin:0 auto;padding:32px 20px 80px}
+
+/* ── PILLS ── */
+.pill{display:inline-block;padding:2px 8px;border-radius:2px;font-size:10px;letter-spacing:.08em;text-transform:uppercase;font-weight:700}
+
+/* ── CARDS ── */
+.campaign-row{background:#141210;border:1px solid #2c2820;border-radius:3px;padding:16px 20px;cursor:pointer;display:flex;align-items:center;gap:16px;margin-bottom:10px;transition:border-color .2s}
+.campaign-row:hover{border-color:#b8860b}
+.accent-bar{width:3px;align-self:stretch;border-radius:2px;flex-shrink:0}
+.hero{background:linear-gradient(135deg,#141210,#7f1d1d15);border:1px solid #2c2820;border-radius:3px;padding:28px;margin-bottom:16px;position:relative;overflow:hidden}
+.hero-deco{position:absolute;top:0;right:0;width:120px;height:120px;background:radial-gradient(circle at top right,#7f1d1d20,transparent);pointer-events:none}
+.stats-bar{display:flex;gap:24px;margin-top:20px;padding-top:16px;border-top:1px solid #302c24;flex-wrap:wrap}
+.stat-num{font-size:20px;color:#c0392b;font-weight:700}
+.stat-label{font-size:10px;color:#7a7060;letter-spacing:.1em;text-transform:uppercase}
+
+/* ── FORM ── */
+.form-wrap{background:#141210;border:1px solid #2c2820;border-radius:3px;overflow:hidden}
+.form-header{padding:20px 24px;border-bottom:1px solid #302c24;background:linear-gradient(135deg,#1a1814,#7f1d1d18);display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap}
+.form-tabs{display:flex;gap:6px;padding:14px 24px;border-bottom:1px solid #302c24;flex-wrap:wrap}
+.form-body{padding:24px;max-height:62vh;overflow-y:auto}
+.field{margin-bottom:14px}
+.field-label{display:block;font-size:10px;letter-spacing:.15em;text-transform:uppercase;color:#7a7060;margin-bottom:5px;font-weight:700}
+.field-hint{font-weight:400;text-transform:none;letter-spacing:0;margin-left:6px;color:#302c24}
+.grid2{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+.grid2 .span2{grid-column:1/-1}
+@media(max-width:600px){.grid2{grid-template-columns:1fr}.grid2 .span2{grid-column:1}}
+
+/* ── ENTRY CARD ── */
+.entry-card{border:1px solid #2c2820;border-radius:3px;background:#1a1814;margin-bottom:8px;overflow:hidden;transition:border-color .2s}
+.entry-card:hover{border-color:#b8860b}
+.entry-head{display:flex;align-items:center;gap:10px;padding:10px 14px;cursor:pointer;user-select:none}
+.entry-arrow{color:#7a7060;font-size:11px;transition:transform .2s;flex-shrink:0;display:inline-block}
+.entry-body{padding:14px;border-top:1px solid #302c24}
+
+/* ── VIEW CARDS ── */
+.npc-card{background:#141210;border:1px solid #2c2820;border-left:3px solid #c0392b;border-radius:3px;padding:16px;margin-bottom:10px}
+.loc-card{background:#141210;border:1px solid #2c2820;border-left:3px solid #b8860b;border-radius:3px;padding:16px;margin-bottom:10px}
+.item-card{background:#141210;border:1px solid #2c2820;border-left:3px solid #7c3aed;border-radius:3px;padding:16px;margin-bottom:10px}
+.sess-card{background:#141210;border:1px solid #2c2820;border-radius:3px;padding:20px;margin-bottom:12px}
+.secret-box{background:#7f1d1d18;border:1px solid #7f1d1d44;border-radius:2px;padding:8px 12px;margin-top:8px}
+.effect-box{background:#1e1b4b;border:1px solid #4c1d9544;border-radius:2px;padding:8px 12px;margin-top:8px}
+.note-box{margin-top:12px;padding:10px 14px;background:#b8860b10;border:1px solid #b8860b33;border-radius:2px}
+.session-num{width:42px;height:42px;border-radius:2px;background:#c0392b22;border:1px solid #c0392b44;display:flex;align-items:center;justify-content:center;color:#c0392b;font-size:15px;font-weight:700;flex-shrink:0}
+.section-divider{font-size:10px;letter-spacing:.2em;text-transform:uppercase;color:#7a7060;font-weight:700;display:flex;align-items:center;gap:10px;margin-bottom:14px}
+.section-divider::after{content:'';flex:1;height:1px;background:#302c24}
+.empty-state{text-align:center;padding:40px 0;color:#7a7060;font-size:13px;border:1px dashed #302c24;border-radius:3px}
+.empty-big{text-align:center;padding:64px 24px;border:1px dashed #302c24;border-radius:3px}
+.body-text{color:#d6d0c4;font-size:13px;line-height:1.7;font-family:Georgia,serif}
+.serif{font-family:'Playfair Display',Georgia,serif}
+.ink{color:#ede8dc}
+.muted{color:#7a7060}
+
+/* ── MODAL ── */
+.modal-bg{position:fixed;inset:0;background:#000000dd;z-index:200;display:flex;align-items:center;justify-content:center;padding:16px}
+.modal-box{background:#141210;border:1px solid #c0392b;border-radius:4px;padding:28px;max-width:400px;width:100%;text-align:center}
+
+/* ── MESA MODE ── */
+.mesa-overlay{position:fixed;inset:0;background:#080706;z-index:300;overflow-y:auto;display:flex;flex-direction:column}
+.mesa-top{background:#0c0b09;border-bottom:1px solid #2c2820;padding:12px 24px;display:flex;align-items:center;gap:16px;flex-shrink:0;flex-wrap:wrap}
+.mesa-body{flex:1;padding:24px;max-width:1100px;margin:0 auto;width:100%}
+.mesa-grid{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+@media(max-width:700px){.mesa-grid{grid-template-columns:1fr}}
+.mesa-card{background:#0f0e0c;border:1px solid #2c2820;border-radius:3px;padding:16px}
+.mesa-card-title{font-size:10px;letter-spacing:.2em;text-transform:uppercase;color:#7a7060;font-weight:700;margin-bottom:12px;display:flex;align-items:center;gap:8px}
+.mesa-card-title::after{content:'';flex:1;height:1px;background:#302c24}
+.mesa-pista{display:flex;align-items:flex-start;gap:12px;padding:12px 0;border-bottom:1px solid #302c24;cursor:pointer;-webkit-tap-highlight-color:transparent}
+.pista-check{width:28px;height:28px;border:2px solid #302c24;border-radius:3px;flex-shrink:0;display:flex;align-items:center;justify-content:center;font-size:14px;transition:all .15s;margin-top:1px}
+.pista-check.done{background:#276749;border-color:#276749;color:#fff}
+.sess-status-btn{padding:8px 14px;border-radius:3px;font-size:11px;letter-spacing:.08em;text-transform:uppercase;font-weight:700;border:1px solid;cursor:pointer;background:none;font-family:'Share Tech Mono',monospace;min-height:40px;-webkit-tap-highlight-color:transparent}
+
+/* ── PAYWALL ── */
+.paywall-bg{position:fixed;inset:0;background:#000000ee;z-index:500;display:flex;align-items:center;justify-content:center;padding:20px}
+.paywall-box{background:#141210;border:1px solid #c0392b;border-radius:4px;padding:32px 28px;max-width:420px;width:100%;text-align:center;animation:fadeUp .3s ease}
+.paywall-price{font-size:42px;font-weight:900;color:#c0392b;font-family:'Playfair Display',Georgia,serif;line-height:1;margin:16px 0 4px}
+.paywall-period{font-size:12px;color:#7a7060;letter-spacing:.1em;text-transform:uppercase;margin-bottom:20px}
+.paywall-feat{text-align:left;margin-bottom:24px}
+.paywall-feat div{display:flex;align-items:center;gap:10px;padding:7px 0;border-bottom:1px solid #1c1a16;font-size:13px;color:#d6d0c4}
+.paywall-feat div:last-child{border-bottom:none}
+.paywall-feat span.check{color:#4ade80;font-size:14px;flex-shrink:0}
+.free-badge{display:inline-block;background:#7f1d1d22;border:1px solid #c0392b44;color:#c0392b;font-size:10px;padding:2px 8px;border-radius:2px;letter-spacing:.08em;text-transform:uppercase;margin-left:auto}
+.premium-badge{display:inline-block;background:#b8860b22;border:1px solid #b8860b55;color:#b8860b;font-size:10px;padding:2px 8px;border-radius:2px;letter-spacing:.08em;text-transform:uppercase}
+.toast{position:fixed;bottom:80px;left:50%;transform:translateX(-50%);padding:9px 18px;border-radius:2px;font-size:12px;z-index:999;animation:fadeIn .2s ease;white-space:nowrap;pointer-events:none}
+
+/* ── FAB (Floating Action Button) ── */
+.fab{position:fixed;bottom:24px;right:20px;z-index:90;width:56px;height:56px;border-radius:50%;background:#c0392b;color:#fff;border:none;font-size:26px;display:flex;align-items:center;justify-content:center;box-shadow:0 4px 20px #c0392b55;cursor:pointer;transition:transform .15s,background .2s}
+.fab:hover,.fab:active{background:#a93226;transform:scale(1.08)}
+@media(min-width:700px){.fab{display:none}}
+
+/* ── HAMBURGER DRAWER ── */
+.drawer-overlay{position:fixed;inset:0;background:#00000088;z-index:150;display:none}
+.drawer-overlay.open{display:block}
+.drawer{position:fixed;top:0;left:0;bottom:0;width:280px;background:#111009;border-right:1px solid #2c2820;z-index:160;transform:translateX(-100%);transition:transform .25s ease;display:flex;flex-direction:column;overflow-y:auto}
+.drawer.open{transform:translateX(0)}
+.drawer-head{padding:20px 20px 14px;border-bottom:1px solid #2c2820;display:flex;align-items:center;gap:10px}
+.drawer-item{display:flex;align-items:center;gap:12px;padding:16px 20px;border-bottom:1px solid #1c1a16;cursor:pointer;color:#d6d0c4;font-size:15px;letter-spacing:.02em;transition:background .15s;min-height:56px;-webkit-tap-highlight-color:transparent}
+.drawer-item:hover,.drawer-item:active{background:#1a1814}
+.drawer-item .di-icon{font-size:20px;width:28px;text-align:center;flex-shrink:0}
+.drawer-item .di-badge{margin-left:auto;background:#c0392b22;border:1px solid #c0392b44;color:#c0392b;font-size:11px;padding:2px 8px;border-radius:2px;letter-spacing:.06em;text-transform:uppercase}
+.hamburger-btn{background:none;border:none;color:#7a7060;padding:8px;display:none;flex-direction:column;gap:5px;cursor:pointer;min-width:44px;min-height:44px;align-items:center;justify-content:center}
+.hamburger-btn span{display:block;width:22px;height:2px;background:currentColor;border-radius:1px;transition:all .2s}
+@media(max-width:699px){.hamburger-btn{display:flex}}
+
+/* ── MOBILE TABS — horizontal scroll, no wrap ── */
+.form-tabs{display:flex;gap:6px;padding:12px 16px;border-bottom:1px solid #302c24;overflow-x:auto;-webkit-overflow-scrolling:touch;scrollbar-width:none}
+.form-tabs::-webkit-scrollbar{display:none}
+.detail-tabs{display:flex;gap:6px;margin-bottom:16px;overflow-x:auto;-webkit-overflow-scrolling:touch;scrollbar-width:none;padding-bottom:2px}
+.detail-tabs::-webkit-scrollbar{display:none}
+.btn-tab{white-space:nowrap;padding:8px 14px;background:none;border:1px solid #2c2820;color:#7a7060;font-size:11px;letter-spacing:.08em;text-transform:uppercase;border-radius:2px;flex-shrink:0}
+.btn-tab:hover{border-color:#b8860b;color:#b8860b}
+.btn-tab.active{border-color:#c0392b;color:#c0392b;background:#7f1d1d22}
+
+/* ── MESA SWIPE ── */
+.mesa-swipe-wrap{position:relative;overflow:hidden;touch-action:pan-y}
+.mesa-swipe-hint{position:absolute;top:50%;transform:translateY(-50%);background:#141210cc;border:1px solid #2c2820;border-radius:2px;padding:4px 10px;font-size:11px;color:#7a7060;pointer-events:none;opacity:0;transition:opacity .2s;z-index:10}
+.mesa-swipe-hint.left{left:8px}
+.mesa-swipe-hint.right{right:8px}
+.mesa-swipe-hint.show{opacity:1}
+.mesa-sess-nav{display:flex;align-items:center;justify-content:space-between;padding:8px 16px;background:#0c0b09;border-bottom:1px solid #1c1a16;flex-shrink:0}
+.mesa-nav-btn{background:none;border:1px solid #2c2820;color:#7a7060;padding:6px 14px;border-radius:2px;font-size:12px;cursor:pointer;font-family:'Share Tech Mono',monospace;transition:all .15s}
+.mesa-nav-btn:hover:not(:disabled){border-color:#d6d0c4;color:#d6d0c4}
+.mesa-nav-btn:disabled{opacity:.3;cursor:not-allowed}
+
+/* ── MOBILE HERO COMPACT ── */
+@media(max-width:600px){
+  .hero{padding:16px}
+  .stats-bar{gap:12px}
+  .stat-num{font-size:16px}
+  .stat-label{font-size:9px}
+  .main{padding:16px 12px 100px}
+  .topbar{padding:0 12px;gap:10px}
+  .form-body{padding:14px;max-height:none;overflow-y:visible}
+  .form-header{padding:14px 16px}
+  .mesa-top{padding:10px 12px;gap:8px}
+  .mesa-body{padding:12px}
+  .form-wrap{border-radius:3px}
+  /* stack hero action buttons vertically on small screens */
+  .hero-actions{flex-direction:column;align-items:stretch}
+  .hero-actions .btn-ghost,.hero-actions .btn-primary{width:100%;justify-content:center}
+  /* bigger fields on mobile */
+  input,select{font-size:16px;padding:13px 14px}
+  textarea{font-size:15px;padding:12px 14px}
+  /* more breathing room for field labels */
+  .field{margin-bottom:18px}
+  .field-label{font-size:11px;margin-bottom:6px}
+  /* session card padding */
+  .sess-card{padding:14px}
+  .npc-card,.loc-card,.item-card{padding:14px}
+  /* entry card head easier to tap */
+  .entry-head{padding:14px}
+  /* modal full width */
+  .modal-box{padding:20px}
+}
+
+/* scroll focused input into view */
+input:focus,textarea:focus,select:focus{scroll-margin-top:80px}
+
+</style>
+</head>
+<body>
+
+<div class="topbar" id="topbar">
+  <button class="hamburger-btn" id="hamburger-btn" onclick="openDrawer()" aria-label="Menu">
+    <span></span><span></span><span></span>
+  </button>
+  <div class="logo-icon">☠</div>
+  <span class="logo-text" style="cursor:pointer" id="logo-btn">Painel do Mestre RPG</span>
+  <span id="bc-sep" style="color:#302c24;display:none">›</span>
+  <span id="bc-current" style="color:#7a7060;font-size:12px;letter-spacing:.06em;text-transform:uppercase;max-width:160px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;display:none"></span>
+  <div style="flex:1"></div>
+  <span id="topbar-premium"></span>
+  <span id="topbar-count" style="color:#302c24;font-size:11px"></span>
+</div>
+
+<!-- Drawer overlay -->
+<div class="drawer-overlay" id="drawer-overlay" onclick="closeDrawer()"></div>
+
+<!-- Drawer -->
+<div class="drawer" id="drawer">
+  <div class="drawer-head">
+    <div class="logo-icon">☠</div>
+    <div>
+      <div style="font-family:'Playfair Display',Georgia,serif;font-size:15px;color:#ede8dc;font-weight:700">Painel do Mestre RPG</div>
+      <div style="font-size:10px;color:#7a7060;letter-spacing:.08em">Painel do Mestre RPG</div>
+    </div>
+  </div>
+  <div class="drawer-item" onclick="closeDrawer();goList()">
+    <span class="di-icon">📁</span> Campanhas
+    <span class="di-badge" id="drawer-count"></span>
+  </div>
+  <div class="drawer-item" id="drawer-create" onclick="closeDrawer();goCreate()">
+    <span class="di-icon">＋</span> Nova Campanha
+  </div>
+  <div class="drawer-item" id="drawer-edit" style="display:none" onclick="closeDrawer();goEdit()">
+    <span class="di-icon">✏️</span> Editar Campanha
+  </div>
+  <div class="drawer-item" id="drawer-pdf" style="display:none" onclick="closeDrawer();exportPDF()">
+    <span class="di-icon">📄</span> Exportar PDF
+  </div>
+  <div style="flex:1"></div>
+  <div class="drawer-item" onclick="closeDrawer();exportJSON()">
+    <span class="di-icon">⬇</span> Exportar Campanhas
+  </div>
+  <div class="drawer-item" onclick="closeDrawer();document.getElementById('file-import-global').click()">
+    <span class="di-icon">⬆</span> Importar Campanhas
+  </div>
+  <input type="file" id="file-import-global" accept=".json" style="display:none" onchange="importJSON(this)"/>
+</div>
+
+<!-- FAB -->
+<button class="fab" id="fab-btn" onclick="goCreate()" aria-label="Nova campanha">＋</button>
+
+
+<div class="main" id="main"></div>
+
+<!-- Paywall Modal -->
+<div id="modal-paywall" style="display:none" class="paywall-bg" onclick="if(event.target===this)closePaywall()">
+  <div class="paywall-box">
+    <div style="font-size:32px;margin-bottom:8px">☠</div>
+    <div style="font-family:'Playfair Display',Georgia,serif;font-size:22px;font-weight:900;color:#ede8dc;margin-bottom:4px">Mestre das Sombras</div>
+    <div style="font-size:13px;color:#7a7060;margin-bottom:16px">Desbloqueie o potencial completo</div>
+    <div class="paywall-price">R$14,90</div>
+    <div class="paywall-period">pagamento único — para sempre</div>
+    <div class="paywall-feat">
+      <div><span class="check">✓</span> Campanhas ilimitadas <span class="free-badge">1 no free</span></div>
+      <div><span class="check">✓</span> Sessões ilimitadas <span class="free-badge">3 no free</span></div>
+      <div><span class="check">✓</span> Export PDF completo</div>
+      <div><span class="check">✓</span> Modo Mesa sem restrições</div>
+      <div><span class="check">✓</span> NPCs, Locais e Itens ilimitados</div>
+      <div><span class="check">✓</span> Atualizações futuras incluídas</div>
+    </div>
+    <button class="btn-primary" style="width:100%;justify-content:center;font-size:14px;padding:14px" onclick="activatePremium()">
+      🔓 Desbloquear Agora — R$14,90
+    </button>
+    <button onclick="closePaywall()" style="background:none;border:none;color:#7a7060;font-size:12px;margin-top:14px;cursor:pointer;font-family:'Share Tech Mono',monospace;padding:8px">
+      Continuar no plano gratuito
+    </button>
+    <div style="margin-top:16px;padding-top:14px;border-top:1px solid #1c1a16">
+      <div style="font-size:10px;color:#4a4440;letter-spacing:.06em">Já tem o código de ativação?</div>
+      <div style="display:flex;gap:8px;margin-top:8px">
+        <input id="promo-input" placeholder="Cole o código aqui..." style="font-size:13px;flex:1"/>
+        <button class="btn-ghost" onclick="redeemCode()" style="flex-shrink:0;white-space:nowrap">Ativar</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Delete Confirm Modal -->
+<div class="modal-bg" id="modal-del" style="display:none">
+  <div class="modal-box">
+    <div style="font-size:32px;margin-bottom:12px">⚠️</div>
+    <div class="serif ink" style="font-size:18px;margin-bottom:8px">Excluir campanha?</div>
+    <p class="muted" style="font-size:13px;line-height:1.6;margin-bottom:20px">Essa ação não pode ser desfeita.</p>
+    <div style="display:flex;gap:10px;justify-content:center">
+      <button class="btn-ghost" onclick="closeDelModal()">Cancelar</button>
+      <button class="btn-primary" id="btn-del-confirm">Excluir</button>
+    </div>
+  </div>
+</div>
+
+<!-- Mesa Mode -->
+<div class="mesa-overlay" id="mesa-overlay" style="display:none">
+  <div class="mesa-top" id="mesa-top"></div>
+  <div class="mesa-body" id="mesa-body"></div>
+</div>
+
+<script>
+/* ═══════════════════════════════════════
+   STATE
+═══════════════════════════════════════ */
+const KEY = 'pm_v1';
+let camps = [];
+try { camps = JSON.parse(localStorage.getItem(KEY)) || []; } catch(e) { camps = []; }
+
+let view = 'list';      // list | form | detail
+let viewingId = null;
+let editingId = null;
+let delTargetId = null;
+let formData = null;
+let activeFormTab = 'info';
+let activeDetailTab = 'overview';
+let mesaSessionId = null;
+
+function persist() {
+  try { localStorage.setItem(KEY, JSON.stringify(camps)); } catch(e) {}
+}
+function uid() { return Date.now().toString(36) + Math.random().toString(36).slice(2,6); }
+function esc(t) { return String(t||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;'); }
+function nl(t) { return esc(t).replace(/\n/g,'<br>'); }
+
+/* ═══════════════════════════════════════
+   BLANKS
+═══════════════════════════════════════ */
+function blankCamp() {
+  return { id:uid(), title:'', synopsis:'', sessions:1, status:'Em Andamento', nex:'5%',
+    createdAt:new Date().toISOString(),
+    antagonist:{name:'',nature:'',motivation:'',power:''},
+    npcs:[], locations:[], items:[], sessions_data:[], notes:'' };
+}
+function blankNPC()  { return { id:uid(), name:'', role:'', description:'', secret:'', rituals:'', sanity:'' }; }
+function blankLoc()  { return { id:uid(), name:'', type:'', description:'', danger:'Baixo' }; }
+function blankItem() { return { id:uid(), name:'', type:'', description:'', effect:'' }; }
+function blankSess(n){ return { id:uid(), number:n, title:'', opening:'', synopsis:'', objectives:'', scenes:[], rewards:'', hook:'', notes:'', quicknotes:'', status:'Pendente', clues:[], linkedLocs:[], linkedNpcs:[] }; }
+function blankScene(n){ return { id:uid(), number:n, name:'', type:'Investigação', description:'' }; }
+function blankClue() { return { id:uid(), text:'', found:false, type:'Física' }; }
+
+const SCENE_TYPES = ['Investigação','Combate','Roleplay','Revelação','Exploração','Armadilha','Ritual','Fuga','Social'];
+const SCENE_COLORS = {'Investigação':'#b8860b','Combate':'#c0392b','Roleplay':'#276749','Revelação':'#7c3aed','Exploração':'#0e7490','Armadilha':'#e65c00','Ritual':'#4c1d95','Fuga':'#dc2626','Social':'#0891b2'};
+const SCENE_ICONS  = {'Investigação':'🔍','Combate':'⚔️','Roleplay':'💬','Revelação':'💡','Exploração':'🗺','Armadilha':'⚠️','Ritual':'🕯','Fuga':'💨','Social':'🤝'};
+const CLUE_TYPES = ['Física','Testemunhal','Ocultista','Documental','Tecnológica'];
+const CLUE_COLORS = {'Física':'#b8860b','Testemunhal':'#276749','Ocultista':'#7c3aed','Documental':'#0e7490','Tecnológica':'#6b7280'};
+
+/* ═══════════════════════════════════════
+   PILLS & HELPERS
+═══════════════════════════════════════ */
+const STATUS_COLORS = {'Em Andamento':'#276749','Concluída':'#b8860b','Pausada':'#7a7060','Planejada':'#c0392b'};
+const DANGER_COLORS = {'Baixo':'#276749','Médio':'#b8860b','Alto':'#e65c00','Extremo':'#c0392b'};
+const SESS_COLORS   = {'Pendente':'#7a7060','Jogada':'#276749','Pulada':'#b8860b'};
+
+function statusPill(s) {
+  const c = STATUS_COLORS[s]||'#7a7060';
+  return `<span class="pill" style="background:${c}22;border:1px solid ${c}55;color:${c}">${esc(s)}</span>`;
+}
+function dangerPill(d) {
+  const c = DANGER_COLORS[d]||'#7a7060';
+  return `<span class="pill" style="background:${c}22;border:1px solid ${c}55;color:${c}">${esc(d)}</span>`;
+}
+function sessPill(s) {
+  const c = SESS_COLORS[s]||'#7a7060';
+  return `<span class="pill" style="background:${c}22;border:1px solid ${c}55;color:${c}">${esc(s)}</span>`;
+}
+function accentColor(status) { return STATUS_COLORS[status]||'#276749'; }
+function fieldHtml(label, inputHtml, hint='') {
+  return `<div class="field"><label class="field-label">${label}${hint?`<span class="field-hint">${hint}</span>`:''}</label>${inputHtml}</div>`;
+}
+
+/* ═══════════════════════════════════════
+   FREEMIUM
+═══════════════════════════════════════ */
+const FREE_CAMP_LIMIT = 1;
+const FREE_SESS_LIMIT = 3;
+// For real Play Store: replace localStorage with Google Play Billing verification
+let isPremium = localStorage.getItem('pm_premium') === 'true';
+
+// Promo codes (in production these would be server-validated)
+const PROMO_CODES = ['MESTRE2024','ORDO1921','PARANORMAL'];
+
+function checkPremium() { return isPremium; }
+
+function showPaywall(reason) {
+  document.getElementById('modal-paywall').style.display = 'flex';
+  // show reason context
+  const reasons = {
+    camp: 'Você atingiu o limite de 1 campanha no plano gratuito.',
+    sess: 'Você atingiu o limite de 3 sessões por campanha no plano gratuito.',
+    pdf:  'O export PDF completo é exclusivo do plano premium.'
+  };
+  if (reason && reasons[reason]) showToast(reasons[reason], 'err');
+}
+function closePaywall() {
+  document.getElementById('modal-paywall').style.display = 'none';
+}
+function activatePremium() {
+  // In production: call Google Play Billing API here
+  // For now: simulate payment confirmation
+  isPremium = true;
+  localStorage.setItem('pm_premium','true');
+  closePaywall();
+  render();
+  showToast('🎉 Premium ativado! Obrigado pelo apoio!');
+}
+function redeemCode() {
+  const code = (document.getElementById('promo-input')?.value||'').trim().toUpperCase();
+  if (!code) { showToast('Digite um código.','err'); return; }
+  if (PROMO_CODES.includes(code)) {
+    activatePremium();
+  } else {
+    showToast('Código inválido ou já usado.','err');
+  }
+}
+
+function guardNewCamp() {
+  if (isPremium) return true;
+  if (camps.length >= FREE_CAMP_LIMIT) { showPaywall('camp'); return false; }
+  return true;
+}
+function guardNewSess(currentCount) {
+  if (isPremium) return true;
+  if (currentCount >= FREE_SESS_LIMIT) { showPaywall('sess'); return false; }
+  return true;
+}
+function guardPDF() {
+  if (isPremium) return true;
+  showPaywall('pdf'); return false;
+}
+
+
+function render() {
+  const main = document.getElementById('main');
+  updateTopbar();
+  updateDrawerItems();
+  if (view === 'list')   { main.innerHTML = renderList();   main.className='main fade-up'; bindList(); }
+  if (view === 'form')   { main.innerHTML = renderForm();   main.className='main fade-up'; bindForm(); }
+  if (view === 'detail') { main.innerHTML = renderDetail(); main.className='main fade-up'; bindDetail(); }
+}
+
+function updateTopbar() {
+  const c = camps.find(x=>x.id===viewingId);
+  document.getElementById('topbar-count').textContent = camps.length + ' campanha' + (camps.length!==1?'s':'');
+  const prem = document.getElementById('topbar-premium');
+  if (prem) prem.innerHTML = isPremium
+    ? `<span style="font-size:10px;color:#b8860b;letter-spacing:.08em;text-transform:uppercase;border:1px solid #b8860b44;padding:3px 8px;border-radius:2px;margin-right:8px">★ Premium</span>`
+    : `<button onclick="showPaywall()" style="background:none;border:1px solid #b8860b44;color:#b8860b;font-size:10px;padding:5px 10px;border-radius:2px;letter-spacing:.06em;text-transform:uppercase;font-family:'Share Tech Mono',monospace;cursor:pointer;min-height:36px;margin-right:8px">⭐ Upgrade</button>`;
+  const sep = document.getElementById('bc-sep');
+  const cur = document.getElementById('bc-current');
+  if (view !== 'list' && c) {
+    sep.style.display='inline'; cur.style.display='inline';
+    cur.textContent = view==='form' ? (editingId?'Editando':'Nova Campanha') : c.title||'Campanha';
+  } else if (view === 'form' && !editingId) {
+    sep.style.display='inline'; cur.style.display='inline'; cur.textContent='Nova Campanha';
+  } else {
+    sep.style.display='none'; cur.style.display='none';
+  }
+}
+
+/* ═══════════════════════════════════════
+   LIST VIEW
+═══════════════════════════════════════ */
+function renderList() {
+  if (camps.length === 0) return `
+    <div class="empty-big fade-up">
+      <div style="font-size:40px;margin-bottom:16px">📁</div>
+      <div class="serif ink" style="font-size:18px;margin-bottom:8px">Nenhuma campanha ainda</div>
+      <div class="muted" style="font-size:13px;margin-bottom:24px">Crie sua primeira campanha de Painel do Mestre RPG</div>
+      <button class="btn-primary" onclick="goCreate()" style="margin:0 auto">＋ Criar Campanha</button>
+    </div>`;
+
+  const rows = camps.map(c => {
+    const jogadas = (c.sessions_data||[]).filter(s=>s.status==='Jogada').length;
+    return `
+    <div class="campaign-row" onclick="goDetail('${c.id}')">
+      <div class="accent-bar" style="background:${accentColor(c.status)}"></div>
+      <div style="flex:1;min-width:0">
+        <div style="display:flex;align-items:center;gap:10px;margin-bottom:6px;flex-wrap:wrap">
+          <span class="serif ink" style="font-size:17px;font-weight:700;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">${esc(c.title)||'<em style="color:#7a7060">Sem título</em>'}</span>
+          ${statusPill(c.status)}
+          ${c.nex?`<span class="muted" style="font-size:11px">NEX ${c.nex}</span>`:''}
+        </div>
+        ${c.synopsis?`<p class="muted" style="font-size:12px;line-height:1.5;margin:0 0 8px;overflow:hidden;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical">${esc(c.synopsis)}</p>`:''}
+        <div style="display:flex;gap:14px;flex-wrap:wrap">
+          ${[`${c.sessions} sessão${c.sessions!==1?'s':''}`,`${(c.npcs||[]).length} NPC${(c.npcs||[]).length!==1?'s':''}`,`${(c.locations||[]).length} local${(c.locations||[]).length!==1?'is':''}`,`${(c.items||[]).length} item${(c.items||[]).length!==1?'s':''}`,`${jogadas} jogada${jogadas!==1?'s':''}`].map(l=>`<span style="font-size:11px;color:#302c24">${l}</span>`).join('')}
+        </div>
+      </div>
+      <button class="btn-del" onclick="event.stopPropagation();askDelete('${c.id}')">✕</button>
+    </div>`;
+  }).join('');
+
+  return `
+    <div class="fade-up">
+      ${!isPremium ? `
+      <div style="background:#141210;border:1px solid #b8860b44;border-left:3px solid #b8860b;border-radius:3px;padding:14px 18px;margin-bottom:20px;display:flex;align-items:center;gap:14px;flex-wrap:wrap">
+        <div style="flex:1;min-width:0">
+          <div style="font-size:12px;font-weight:700;color:#b8860b;letter-spacing:.04em;margin-bottom:2px">⭐ Plano Gratuito</div>
+          <div style="font-size:12px;color:#7a7060">Usando ${camps.length}/${FREE_CAMP_LIMIT} campanha. Desbloqueie ilimitado por R$14,90.</div>
+        </div>
+        <button class="btn-ghost" onclick="showPaywall()" style="border-color:#b8860b44;color:#b8860b;flex-shrink:0">Fazer Upgrade</button>
+      </div>` : `
+      <div style="background:#141210;border:1px solid #27674944;border-left:3px solid #276749;border-radius:3px;padding:10px 18px;margin-bottom:20px;display:flex;align-items:center;gap:10px">
+        <span style="color:#4ade80;font-size:14px">★</span>
+        <div style="font-size:12px;color:#4ade80;font-weight:700;flex:1">Mestre das Sombras — Premium ativo</div>
+      </div>`}
+      <div id="pwa-install-btn" style="display:none;background:#141210;border:1px solid #2c2820;border-left:3px solid #0e7490;border-radius:3px;padding:12px 18px;margin-bottom:16px;align-items:center;gap:12px;flex-wrap:wrap">
+        <div style="flex:1;min-width:0">
+          <div style="font-size:12px;font-weight:700;color:#67e8f9;margin-bottom:2px">📲 Instalar App</div>
+          <div style="font-size:12px;color:#7a7060">Instale no celular para usar offline, sem abrir o navegador.</div>
+        </div>
+        <button class="btn-ghost" onclick="installPWA()" style="border-color:#0e749044;color:#67e8f9;flex-shrink:0">Instalar</button>
+      </div>
+      <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:24px;gap:12px;flex-wrap:wrap">
+        <div>
+          <div class="serif ink" style="font-size:28px;font-weight:900">Arquivo de Campanhas</div>
+          <div class="muted" style="font-size:12px;margin-top:4px">${camps.length} campanha${camps.length!==1?'s':''} registrada${camps.length!==1?'s':''}</div>
+        </div>
+        <div style="display:flex;gap:8px;flex-wrap:wrap">
+          ${camps.length?`<button class="btn-ghost" onclick="exportJSON()">⬇ Exportar Campanhas</button>`:''}
+          <button class="btn-ghost" onclick="document.getElementById('file-import-global').click()">⬆ Importar Campanhas</button>
+          <button class="btn-primary" onclick="goCreate()">＋ Nova Campanha</button>
+        </div>
+      </div>
+      ${rows}
+    </div>`;
+}
+
+function bindList() {
+  document.getElementById('logo-btn').onclick = () => { view='list'; viewingId=null; editingId=null; render(); };
+}
+
+/* ═══════════════════════════════════════
+   FORM VIEW
+═══════════════════════════════════════ */
+function renderForm() {
+  const d = formData;
+  const tabs = [
+    {k:'info',    l:'📋 Info'},
+    {k:'antagonist',l:'☠ Antagonista'},
+    {k:'npcs',    l:`👤 NPCs (${d.npcs.length})`},
+    {k:'locations',l:`📍 Locais (${d.locations.length})`},
+    {k:'items',   l:`🗡 Itens (${d.items.length})`},
+    {k:'sessions',l:`📅 Sessões (${d.sessions})`},
+    {k:'notes',   l:'📝 Notas'},
+  ];
+
+  let body = '';
+
+  if (activeFormTab === 'info') body = `
+    <div class="grid2">
+      <div class="span2">${fieldHtml('Título da Campanha','<input id="f-title" value="'+esc(d.title)+'" placeholder="Ex: O Silêncio da Carne" style="font-size:16px"/>')}</div>
+      ${fieldHtml('Número de Sessões','<input id="f-sessions" type="number" min="1" max="20" value="'+d.sessions+'"/>')}
+      ${fieldHtml('Status','<select id="f-status">'+['Em Andamento','Planejada','Pausada','Concluída'].map(s=>`<option${s===d.status?' selected':''}>${s}</option>`).join('')+'</select>')}
+      ${fieldHtml('NEX dos Agentes','<select id="f-nex">'+['5%','10%','15%','20%','25%','30%','35%','40%','45%','50%','55%','60%','65%','70%','75%','80%','85%','90%','95%','99%'].map(n=>`<option${n===d.nex?' selected':''}>${n}</option>`).join('')+'</select>','(Nível de Exposição ao Paranormal)')}
+      <div class="span2">${fieldHtml('Sinopse / Premissa','<textarea id="f-synopsis" rows="5" placeholder="Descreva o arco central, o mistério principal...">'+esc(d.synopsis)+'</textarea>')}</div>
+    </div>`;
+
+  if (activeFormTab === 'antagonist') body = `
+    <div class="grid2">
+      ${fieldHtml('Nome / Designação','<input id="a-name" value="'+esc(d.antagonist.name)+'" placeholder="Ex: O Devorador de Nomes"/>')}
+      ${fieldHtml('Natureza','<input id="a-nature" value="'+esc(d.antagonist.nature)+'" placeholder="Ex: Entidade do Outro Lado, Cultista"/>')}
+      <div class="span2">${fieldHtml('Motivação / Objetivo','<textarea id="a-motivation" rows="3" placeholder="O que esse antagonista quer?">'+esc(d.antagonist.motivation)+'</textarea>')}</div>
+      <div class="span2">${fieldHtml('Poder / Habilidade Paranormal','<textarea id="a-power" rows="3" placeholder="Quais habilidades sobrenaturais?">'+esc(d.antagonist.power)+'</textarea>')}</div>
+    </div>`;
+
+  if (activeFormTab === 'npcs') body = `
+    <div id="npcs-list">${d.npcs.map((n,i)=>renderEntryCard('npc',n,i)).join('')}</div>
+    <button class="btn-add" onclick="addEntry('npcs')">+ Adicionar NPC</button>`;
+
+  if (activeFormTab === 'locations') body = `
+    <div id="locs-list">${d.locations.map((l,i)=>renderLocCard(l,i)).join('')}</div>
+    <button class="btn-add" onclick="addLoc()">+ Adicionar Local</button>`;
+
+  if (activeFormTab === 'items') body = `
+    <div id="items-list">${d.items.map((item,i)=>renderEntryCard('item',item,i)).join('')}</div>
+    <button class="btn-add" onclick="addEntry('items')">+ Adicionar Item</button>`;
+
+  if (activeFormTab === 'sessions') body = d.sessions_data.map((s,i)=>`
+    <div class="entry-card" id="sess-card-${s.id}">
+      <div class="entry-head" onclick="toggleEntry('sess-body-${s.id}','sess-arrow-${s.id}')">
+        <span class="entry-arrow" id="sess-arrow-${s.id}" style="transform:${i===0?'rotate(90deg)':'rotate(0deg)'}">▶</span>
+        <div style="flex:1;min-width:0">
+          <div style="color:#ede8dc;font-size:13px">Sessão ${s.number}${s.title?' — '+esc(s.title):''}</div>
+          ${s.synopsis?`<div style="color:#7a7060;font-size:11px;margin-top:2px">${esc(s.synopsis.slice(0,55))}${s.synopsis.length>55?'...':''}</div>`:''}
+        </div>
+        ${sessPill(s.status)}
+      </div>
+      <div class="entry-body" id="sess-body-${s.id}" style="display:${i===0?'block':'none'}">
+        <div class="grid2">
+          ${fieldHtml('Título','<input onchange="setSessField(\''+s.id+'\',\'title\',this.value)" value="'+esc(s.title)+'" placeholder="Ex: A Noite do Coletor"/>')}
+          ${fieldHtml('Status','<select onchange="setSessField(\''+s.id+'\',\'status\',this.value)">'+['Pendente','Jogada','Pulada'].map(st=>`<option${st===s.status?' selected':''}>${st}</option>`).join('')+'</select>')}
+          <div class="span2">${fieldHtml('Abertura da Sessão','<textarea rows="2" onchange="setSessField(\''+s.id+'\',\'opening\',this.value)" placeholder="Como a sessão começa? Qual a cena de abertura? (leia em voz alta)">'+esc(s.opening||'')+'</textarea>')}</div>
+          <div class="span2">${fieldHtml('Sinopse','<textarea rows="3" onchange="setSessField(\''+s.id+'\',\'synopsis\',this.value)" placeholder="O que acontece nessa sessão?">'+esc(s.synopsis)+'</textarea>')}</div>
+          ${fieldHtml('Objetivos dos Agentes','<textarea rows="3" onchange="setSessField(\''+s.id+'\',\'objectives\',this.value)" placeholder="O que devem descobrir?">'+esc(s.objectives)+'</textarea>')}
+          <div class="span2">
+            <div class="field-label" style="margin-bottom:8px">🎬 Cenas da Sessão</div>
+            <div id="scenes-${s.id}">
+              ${(s.scenes||[]).map((sc,si)=>renderSceneRow(s.id,sc,si)).join('')}
+            </div>
+            <button class="btn-add" style="margin-top:4px" onclick="addScene('${s.id}')">+ Adicionar Cena</button>
+          </div>
+          ${fieldHtml('Recompensas / Consequências','<textarea rows="2" onchange="setSessField(\''+s.id+'\',\'rewards\',this.value)" placeholder="XP, itens, mudanças no mundo...">'+esc(s.rewards)+'</textarea>')}
+          ${fieldHtml('Gancho para Próxima Sessão','<textarea rows="2" onchange="setSessField(\''+s.id+'\',\'hook\',this.value)" placeholder="Como termina? O que deixa os jogadores curiosos?">'+esc(s.hook||'')+'</textarea>')}
+          ${fieldHtml('Notas do Mestre','<textarea rows="2" onchange="setSessField(\''+s.id+'\',\'notes\',this.value)" placeholder="Observações internas, segredos...">'+esc(s.notes)+'</textarea>')}
+          <div class="span2">
+            <div class="field-label">🔍 Pistas / Evidências</div>
+            <div id="clues-${s.id}">
+              ${(s.clues||[]).map(cl=>`
+                <div style="display:flex;flex-direction:column;gap:6px;margin-bottom:12px;padding:10px;background:#0a0908;border:1px solid #2c2820;border-radius:2px" id="clue-row-${cl.id}">
+                  <div style="display:flex;gap:8px;align-items:center">
+                    <select onchange="setClueField('${s.id}','${cl.id}','type',this.value)" style="flex:1;font-size:12px;padding:6px 8px">
+                      ${CLUE_TYPES.map(t=>`<option${t===(cl.type||'Física')?' selected':''}>${t}</option>`).join('')}
+                    </select>
+                    <button class="btn-del" onclick="delClue('${s.id}','${cl.id}')">✕</button>
+                  </div>
+                  <textarea rows="2" style="resize:vertical;min-height:48px" placeholder="Descreva a pista..." onchange="setClue('${s.id}','${cl.id}',this.value)">${esc(cl.text)}</textarea>
+                </div>`).join('')}
+            </div>
+            <button class="btn-add" style="margin-top:4px" onclick="addClue('${s.id}')">+ Adicionar Pista</button>
+          </div>
+
+          <!-- LOCAIS DA SESSÃO -->
+          <div class="span2">
+            <div class="field-label" style="margin-bottom:8px">📍 Locais desta Sessão</div>
+            <p style="color:#4a4440;font-size:11px;margin-bottom:10px">Marque os locais que aparecem nesta sessão — eles ficam disponíveis no Modo Mesa sem precisar rolar.</p>
+            ${d.locations.length===0
+              ? `<div style="color:#4a4440;font-size:12px;padding:8px;border:1px dashed #302c24;border-radius:2px">Nenhum local cadastrado. Adicione locais na aba 📍 Locais.</div>`
+              : d.locations.map(l=>{
+                  const linked = (s.linkedLocs||[]).includes(l.id);
+                  return `<label style="display:flex;align-items:center;gap:10px;padding:8px 10px;border-radius:2px;cursor:pointer;margin-bottom:4px;background:${linked?'#b8860b12':'#0a0908'};border:1px solid ${linked?'#b8860b44':'#2c2820'};transition:all .15s">
+                    <input type="checkbox" ${linked?'checked':''} onchange="toggleLinked('loc','${s.id}','${l.id}',this.checked)"
+                      style="width:16px;height:16px;accent-color:#b8860b;flex-shrink:0"/>
+                    <div style="flex:1;min-width:0">
+                      <div style="color:#ede8dc;font-size:13px">${esc(l.name||'Sem nome')}</div>
+                      ${l.type?`<div style="color:#7a7060;font-size:11px">${esc(l.type)} · ${(l.rooms||[]).length} cômodo${(l.rooms||[]).length!==1?'s':''}</div>`:''}
+                    </div>
+                    ${dangerPill(l.danger)}
+                  </label>`;
+                }).join('')}
+          </div>
+
+          <!-- NPCS DA SESSÃO -->
+          <div class="span2">
+            <div class="field-label" style="margin-bottom:8px">👤 NPCs desta Sessão</div>
+            <p style="color:#4a4440;font-size:11px;margin-bottom:10px">Marque os NPCs que aparecem nesta sessão — aparecem primeiro no Modo Mesa.</p>
+            ${d.npcs.length===0
+              ? `<div style="color:#4a4440;font-size:12px;padding:8px;border:1px dashed #302c24;border-radius:2px">Nenhum NPC cadastrado. Adicione NPCs na aba 👤 NPCs.</div>`
+              : d.npcs.map(n=>{
+                  const linked = (s.linkedNpcs||[]).includes(n.id);
+                  return `<label style="display:flex;align-items:center;gap:10px;padding:8px 10px;border-radius:2px;cursor:pointer;margin-bottom:4px;background:${linked?'#c0392b12':'#0a0908'};border:1px solid ${linked?'#c0392b44':'#2c2820'};transition:all .15s">
+                    <input type="checkbox" ${linked?'checked':''} onchange="toggleLinked('npc','${s.id}','${n.id}',this.checked)"
+                      style="width:16px;height:16px;accent-color:#c0392b;flex-shrink:0"/>
+                    <div style="flex:1;min-width:0">
+                      <div style="color:#ede8dc;font-size:13px">${esc(n.name||'Sem nome')}</div>
+                      ${n.role?`<div style="color:#b8860b;font-size:11px">${esc(n.role)}</div>`:''}
+                    </div>
+                  </label>`;
+                }).join('')}
+          </div>
+        </div>
+      </div>
+    </div>`).join('');
+
+  if (activeFormTab === 'notes') body = fieldHtml('Notas Gerais','<textarea id="f-notes" rows="18" placeholder="Anotações livres...">'+esc(d.notes)+'</textarea>');
+
+  return `
+    <div class="form-wrap fade-up">
+      <div class="form-header">
+        <div>
+          <div style="font-size:10px;letter-spacing:.2em;text-transform:uppercase;color:#c0392b;margin-bottom:4px">${editingId?'Editando Campanha':'Nova Campanha'}</div>
+          <div class="serif ink" style="font-size:22px;font-weight:700">${esc(formData.title)||'Sem título'}</div>
+        </div>
+        <div style="display:flex;gap:8px">
+          <button class="btn-ghost" onclick="cancelForm()">Cancelar</button>
+          <button class="btn-primary" onclick="saveForm()">💾 Salvar</button>
+        </div>
+      </div>
+      <div class="form-tabs">${tabs.map(t=>`<button class="btn-tab ${activeFormTab===t.k?'active':''}" onclick="switchFormTab('${t.k}')">${t.l}</button>`).join('')}</div>
+      <div class="form-body">${body}</div>
+    </div>`;
+}
+
+function renderEntryCard(type, entry, idx) {
+  const id = entry.id;
+  let title='', subtitle='', badge='', body='';
+
+  if (type==='npc') {
+    title=entry.name; subtitle=entry.role;
+    body = `<div class="grid2">
+      ${fieldHtml('Nome','<input value="'+esc(entry.name)+'" oninput="setEntryField(\'npcs\',\''+id+'\',\'name\',this.value)"/>')}
+      ${fieldHtml('Papel / Tipo','<input value="'+esc(entry.role)+'" oninput="setEntryField(\'npcs\',\''+id+'\',\'role\',this.value)" placeholder="Ex: Cultista, Entidade, Informante"/>')}
+      <div class="span2">${fieldHtml('Descrição','<textarea rows="3" oninput="setEntryField(\'npcs\',\''+id+'\',\'description\',this.value)" placeholder="Aparência, personalidade, como age...">'+esc(entry.description)+'</textarea>')}</div>
+      <div class="span2">${fieldHtml('Rituais / Habilidades Paranormais','<textarea rows="3" oninput="setEntryField(\'npcs\',\''+id+'\',\'rituals\',this.value)" placeholder="Poderes, rituais, ataques especiais, fraquezas...">'+esc(entry.rituals||'')+'</textarea>')}</div>
+      <div class="span2">${fieldHtml('Segredo / Motivação Oculta','<textarea rows="2" oninput="setEntryField(\'npcs\',\''+id+'\',\'secret\',this.value)" placeholder="O que esse NPC esconde? Qual seu real objetivo?">'+esc(entry.secret)+'</textarea>','(só o mestre vê)')}</div>
+      ${fieldHtml('Impacto na Sanidade','<input value="'+esc(entry.sanity||'')+'" oninput="setEntryField(\'npcs\',\''+id+'\',\'sanity\',this.value)" placeholder="Ex: -1d4 SAN ao ver, -2 SAN por turno"/>')}
+    </div>`;
+  }
+  if (type==='loc') {
+    title=entry.name; subtitle=entry.type; badge=dangerPill(entry.danger);
+    body = `<div class="grid2">
+      ${fieldHtml('Nome','<input value="'+esc(entry.name)+'" oninput="setEntryField(\'locations\',\''+id+'\',\'name\',this.value)" placeholder="Ex: Fábrica Abandonada"/>')}
+      ${fieldHtml('Tipo','<input value="'+esc(entry.type)+'" oninput="setEntryField(\'locations\',\''+id+'\',\'type\',this.value)" placeholder="Ex: Urbano, Outro Lado"/>')}
+      <div class="span2">${fieldHtml('Descrição','<textarea rows="3" oninput="setEntryField(\'locations\',\''+id+'\',\'description\',this.value)" placeholder="Ambiente, atmosfera...">'+esc(entry.description)+'</textarea>')}</div>
+      ${fieldHtml('Nível de Perigo','<select onchange="setEntryField(\'locations\',\''+id+'\',\'danger\',this.value)">'+['Baixo','Médio','Alto','Extremo'].map(d=>`<option${d===entry.danger?' selected':''}>${d}</option>`).join('')+'</select>')}
+    </div>`;
+  }
+  if (type==='item') {
+    title=entry.name; subtitle=entry.type;
+    body = `<div class="grid2">
+      ${fieldHtml('Nome','<input value="'+esc(entry.name)+'" oninput="setEntryField(\'items\',\''+id+'\',\'name\',this.value)" placeholder="Ex: Espelho de Madalena"/>')}
+      ${fieldHtml('Tipo','<input value="'+esc(entry.type)+'" oninput="setEntryField(\'items\',\''+id+'\',\'type\',this.value)" placeholder="Ex: Artefato, Pista, Ritual"/>')}
+      <div class="span2">${fieldHtml('Descrição','<textarea rows="2" oninput="setEntryField(\'items\',\''+id+'\',\'description\',this.value)" placeholder="Aparência, origem...">'+esc(entry.description)+'</textarea>')}</div>
+      <div class="span2">${fieldHtml('Efeito / Significado','<textarea rows="2" oninput="setEntryField(\'items\',\''+id+'\',\'effect\',this.value)" placeholder="O que esse item faz ou revela?">'+esc(entry.effect)+'</textarea>')}</div>
+    </div>`;
+  }
+
+  const typeMap = {npc:'npcs', loc:'locations', item:'items'};
+  const open = idx === 0;
+  return `
+    <div class="entry-card" id="ec-${id}">
+      <div class="entry-head" onclick="toggleEntry('eb-${id}','ea-${id}')">
+        <span class="entry-arrow" id="ea-${id}" style="transform:${open?'rotate(90deg)':'rotate(0)'}">▶</span>
+        <div style="flex:1;min-width:0">
+          <div style="color:#ede8dc;font-size:13px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">${esc(title)||'<em style="color:#7a7060">Sem nome</em>'}</div>
+          ${subtitle?`<div style="color:#7a7060;font-size:11px;margin-top:2px">${esc(subtitle)}</div>`:''}
+        </div>
+        ${badge}
+        <button class="btn-del" onclick="event.stopPropagation();delEntry('${typeMap[type]}','${id}')">✕</button>
+      </div>
+      <div class="entry-body" id="eb-${id}" style="display:${open?'block':'none'}">${body}</div>
+    </div>`;
+}
+
+function bindForm() {
+  // live title update
+  const tf = document.getElementById('f-title');
+  if (tf) tf.addEventListener('input', e => {
+    formData.title = e.target.value;
+    document.querySelector('.form-header .serif').textContent = formData.title || 'Sem título';
+  });
+  // scroll focused input into view when keyboard opens on mobile
+  document.querySelectorAll('.form-body input, .form-body textarea, .form-body select').forEach(el => {
+    el.addEventListener('focus', () => {
+      setTimeout(() => el.scrollIntoView({behavior:'smooth', block:'center'}), 300);
+    });
+  });
+}
+
+/* ═══════════════════════════════════════
+   DETAIL VIEW
+═══════════════════════════════════════ */
+function renderDetail() {
+  const c = camps.find(x=>x.id===viewingId);
+  if (!c) return '';
+
+  const jogadas = (c.sessions_data||[]).filter(s=>s.status==='Jogada').length;
+  const tabs = [
+    {k:'overview',  l:'Visão Geral'},
+    {k:'antagonist',l:'☠ Antagonista'},
+    {k:'npcs',      l:`NPCs (${c.npcs.length})`},
+    {k:'locations', l:`Locais (${c.locations.length})`},
+    {k:'items',     l:`Itens (${c.items.length})`},
+    {k:'sessions',  l:`Sessões (${c.sessions})`},
+    {k:'notes',     l:'Notas'},
+  ];
+
+  let body = '';
+
+  if (activeDetailTab === 'overview') body = `
+    <div class="grid2">
+      <div style="background:#141210;border:1px solid #2c2820;border-radius:3px;padding:16px">
+        <div class="section-divider">Sessões</div>
+        ${c.sessions_data.length===0?'<span class="muted" style="font-size:12px">Nenhuma sessão</span>':
+          c.sessions_data.map(s=>`
+          <div style="display:flex;gap:8px;align-items:center;padding:7px 0;border-bottom:1px solid #302c24">
+            <span style="width:6px;height:6px;border-radius:50%;background:${SESS_COLORS[s.status]||'#302c24'};flex-shrink:0;display:inline-block"></span>
+            <span style="color:#c0392b;font-size:12px;font-weight:700;flex-shrink:0">${String(s.number).padStart(2,'0')}</span>
+            <span style="color:${s.title?'#ede8dc':'#7a7060'};font-size:13px;flex:1;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;font-style:${s.title?'normal':'italic'}">${esc(s.title)||'Sem título'}</span>
+            ${sessPill(s.status)}
+            <button class="btn-green" onclick="openMesa('${s.id}')">▶ Mesa</button>
+          </div>`).join('')}
+      </div>
+      <div style="background:#141210;border:1px solid #2c2820;border-radius:3px;padding:16px">
+        <div class="section-divider">NPCs</div>
+        ${c.npcs.length===0?'<span class="muted" style="font-size:12px">Nenhum NPC</span>':
+          c.npcs.map(n=>`<div style="padding:7px 0;border-bottom:1px solid #302c24"><div style="color:#ede8dc;font-size:13px">${esc(n.name)||'<em style="color:#7a7060">Sem nome</em>'}</div>${n.role?`<div class="muted" style="font-size:11px">${esc(n.role)}</div>`:''}</div>`).join('')}
+      </div>
+    </div>`;
+
+  if (activeDetailTab === 'antagonist') {
+    const a = c.antagonist;
+    body = !a?.name ? '<div class="empty-state">Nenhum antagonista cadastrado</div>' : `
+      <div style="background:#141210;border:1px solid #7f1d1d44;border-left:3px solid #c0392b;border-radius:3px;padding:24px">
+        <div class="serif ink" style="font-size:24px;font-weight:900;margin-bottom:4px">${esc(a.name)}</div>
+        ${a.nature?`<div style="color:#c0392b;font-size:11px;letter-spacing:.1em;text-transform:uppercase;margin-bottom:16px">${esc(a.nature)}</div>`:''}
+        <div class="grid2">
+          ${a.motivation?`<div><div style="font-size:10px;color:#7a7060;letter-spacing:.15em;text-transform:uppercase;margin-bottom:6px;font-weight:700">Motivação</div><p class="body-text">${nl(a.motivation)}</p></div>`:''}
+          ${a.power?`<div><div style="font-size:10px;color:#7a7060;letter-spacing:.15em;text-transform:uppercase;margin-bottom:6px;font-weight:700">Poder Paranormal</div><p class="body-text">${nl(a.power)}</p></div>`:''}
+        </div>
+      </div>`;
+  }
+
+  if (activeDetailTab === 'locations') body = c.locations.length===0?'<div class="empty-state">Nenhum local cadastrado</div>':
+    c.locations.map(l=>renderLocDetailCard(l)).join('');
+
+  if (activeDetailTab === 'items') body = c.items.length===0?'<div class="empty-state">Nenhum item cadastrado</div>':
+    c.items.map(item=>`
+    <div class="item-card">
+      <div class="serif ink" style="font-size:17px;font-weight:700">${esc(item.name)}</div>
+      ${item.type?`<span style="font-size:11px;color:#a78bfa;letter-spacing:.08em;text-transform:uppercase">${esc(item.type)}</span>`:''}
+      ${item.description?`<p class="body-text" style="margin-top:8px">${nl(item.description)}</p>`:''}
+      ${item.effect?`<div class="effect-box"><div style="font-size:9px;color:#a78bfa;letter-spacing:.1em;text-transform:uppercase;margin-bottom:4px">⚡ Efeito</div><p style="color:#c4b5fd;font-size:12px;line-height:1.6;margin:0">${nl(item.effect)}</p></div>`:''}
+    </div>`).join('');
+
+  if (activeDetailTab === 'npcs') body = c.npcs.length===0?'<div class="empty-state">Nenhum NPC cadastrado</div>':
+    c.npcs.map(n=>`
+    <div class="npc-card">
+      <div class="serif ink" style="font-size:17px;font-weight:700">${esc(n.name)}</div>
+      ${n.role?`<span style="font-size:11px;color:#b8860b;letter-spacing:.08em;text-transform:uppercase">${esc(n.role)}</span>`:''}
+      ${n.description?`<p class="body-text" style="margin-top:8px">${nl(n.description)}</p>`:''}
+      ${n.rituals?`<div style="background:#7c3aed18;border:1px solid #7c3aed44;border-radius:2px;padding:8px 12px;margin-top:8px"><div style="font-size:9px;color:#a78bfa;letter-spacing:.1em;text-transform:uppercase;margin-bottom:4px">⚡ Rituais / Habilidades</div><p style="color:#c4b5fd;font-size:12px;line-height:1.6;margin:0">${nl(n.rituals)}</p></div>`:''}
+      ${n.sanity?`<div style="background:#0e749018;border:1px solid #0e749044;border-radius:2px;padding:6px 10px;margin-top:6px"><div style="font-size:9px;color:#67e8f9;letter-spacing:.1em;text-transform:uppercase;margin-bottom:2px">🧠 Impacto na Sanidade</div><p style="color:#a5f3fc;font-size:12px;margin:0">${esc(n.sanity)}</p></div>`:''}
+      ${n.secret?`<div class="secret-box"><div style="font-size:9px;color:#c0392b;letter-spacing:.1em;text-transform:uppercase;margin-bottom:4px">🔒 Segredo</div><p style="color:#c0a0a0;font-size:12px;line-height:1.6;margin:0">${nl(n.secret)}</p></div>`:''}
+    </div>`).join('');
+
+  if (activeDetailTab === 'sessions') body = c.sessions_data.length===0?'<div class="empty-state">Nenhuma sessão cadastrada</div>':
+    c.sessions_data.map(s=>`
+    <div class="sess-card">
+      <div style="display:flex;align-items:center;gap:14px;margin-bottom:14px;flex-wrap:wrap">
+        <div class="session-num">${String(s.number).padStart(2,'0')}</div>
+        <div style="flex:1"><div class="serif ink" style="font-size:18px;font-weight:700">${esc(s.title)||'<em style="color:#7a7060">Sem título</em>'}</div></div>
+        ${sessPill(s.status)}
+        <button class="btn-green" onclick="openMesa('${s.id}')">▶ Modo Mesa</button>
+      </div>
+      ${s.opening?`<div style="background:#c0392b10;border:1px solid #c0392b33;border-left:3px solid #c0392b;border-radius:2px;padding:10px 14px;margin-bottom:12px"><div style="font-size:9px;color:#c0392b;letter-spacing:.1em;text-transform:uppercase;margin-bottom:4px">🎬 Abertura — leia em voz alta</div><p style="color:#d6c0b8;font-size:13px;line-height:1.7;font-family:Georgia,serif;font-style:italic;margin:0">${nl(s.opening)}</p></div>`:''}
+      <div class="grid2">
+        ${s.synopsis?`<div><div style="font-size:10px;color:#7a7060;letter-spacing:.12em;text-transform:uppercase;margin-bottom:6px;font-weight:700">Sinopse</div><p class="body-text" style="margin:0">${nl(s.synopsis)}</p></div>`:''}
+        ${s.objectives?`<div><div style="font-size:10px;color:#7a7060;letter-spacing:.12em;text-transform:uppercase;margin-bottom:6px;font-weight:700">Objetivos</div><p class="body-text" style="margin:0">${nl(s.objectives)}</p></div>`:''}
+        ${s.rewards?`<div><div style="font-size:10px;color:#7a7060;letter-spacing:.12em;text-transform:uppercase;margin-bottom:6px;font-weight:700">Recompensas</div><p class="body-text" style="margin:0">${nl(s.rewards)}</p></div>`:''}
+      </div>
+      ${(s.scenes||[]).length?`
+        <div style="margin-top:14px">
+          <div style="font-size:10px;color:#7a7060;letter-spacing:.12em;text-transform:uppercase;margin-bottom:10px;font-weight:700">🎬 Cenas da Sessão</div>
+          ${(s.scenes||[]).map((sc,i)=>{
+            const col=SCENE_COLORS[sc.type]||'#b8860b';
+            const ic=SCENE_ICONS[sc.type]||'🎬';
+            return `<div style="background:#141210;border:1px solid #2c2820;border-left:3px solid ${col};border-radius:2px;padding:12px 14px;margin-bottom:8px">
+              <div style="display:flex;align-items:center;gap:8px;margin-bottom:${sc.description?'8px':'0'}">
+                <span style="font-size:10px;font-weight:700;color:${col};font-family:'Share Tech Mono',monospace;flex-shrink:0">C${String(i+1).padStart(2,'0')}</span>
+                <span style="font-size:13px;font-weight:700;color:#ede8dc;flex:1">${esc(sc.name)||'Sem nome'}</span>
+                <span style="display:inline-block;padding:2px 8px;border-radius:2px;font-size:10px;background:${col}22;border:1px solid ${col}44;color:${col};text-transform:uppercase;letter-spacing:.06em;flex-shrink:0">${ic} ${esc(sc.type)}</span>
+              </div>
+              ${sc.description?`<p class="body-text" style="margin:0;font-size:12px">${nl(sc.description)}</p>`:''}
+            </div>`;
+          }).join('')}
+        </div>`:''}
+      ${s.clues?.length?`
+        <div style="margin-top:14px">
+          <div style="font-size:10px;color:#7a7060;letter-spacing:.12em;text-transform:uppercase;margin-bottom:8px;font-weight:700">🔍 Pistas</div>
+          ${s.clues.map(cl=>{const cc=CLUE_COLORS[cl.type||'Física']||'#b8860b';return`<div style="display:flex;gap:8px;align-items:flex-start;padding:5px 0;border-bottom:1px solid #1c1a16">
+            <span style="color:${cl.found?'#4ade80':'#7a7060'};font-size:12px;flex-shrink:0;margin-top:2px">${cl.found?'✓':'○'}</span>
+            <span style="display:inline-block;padding:1px 6px;border-radius:2px;font-size:9px;background:${cc}22;border:1px solid ${cc}44;color:${cc};text-transform:uppercase;letter-spacing:.06em;flex-shrink:0;margin-top:2px">${esc(cl.type||'Física')}</span>
+            <span style="color:${cl.found?'#7a7060':'#d6d0c4'};font-size:13px;text-decoration:${cl.found?'line-through':'none'}">${esc(cl.text)}</span>
+          </div>`}).join('')}
+        </div>`:''}
+      ${s.hook?`<div style="margin-top:12px;padding:10px 14px;background:#0e749015;border:1px solid #0e749033;border-radius:2px"><div style="font-size:9px;color:#67e8f9;letter-spacing:.1em;text-transform:uppercase;margin-bottom:4px">🪝 Gancho para Próxima Sessão</div><p style="color:#a5f3fc;font-size:12px;line-height:1.6;margin:0">${nl(s.hook)}</p></div>`:''}
+      ${s.notes?`<div class="note-box"><div style="font-size:9px;color:#b8860b;letter-spacing:.1em;text-transform:uppercase;margin-bottom:4px">📝 Notas do Mestre</div><p style="color:#d4b26a;font-size:12px;line-height:1.6;margin:0">${nl(s.notes)}</p></div>`:''}
+    </div>`).join('');
+
+  if (activeDetailTab === 'notes') body = `
+    <div style="background:#141210;border:1px solid #2c2820;border-radius:3px;padding:20px">
+      ${c.notes?`<p class="body-text" style="white-space:pre-wrap">${esc(c.notes)}</p>`:'<div class="empty-state">Sem notas</div>'}
+    </div>`;
+
+
+  return `
+    <div class="fade-up">
+      <div class="hero">
+        <div class="hero-deco"></div>
+        <div style="display:flex;align-items:flex-start;justify-content:space-between;gap:16px;flex-wrap:wrap">
+          <div>
+            <div style="display:flex;align-items:center;gap:10px;margin-bottom:8px;flex-wrap:wrap">
+              ${statusPill(c.status)}
+              <span class="muted" style="font-size:11px">NEX ${c.nex||'5%'}</span>
+              <span class="muted" style="font-size:11px">${c.sessions} sessão${c.sessions!==1?'s':''}</span>
+            </div>
+            <h1 class="serif ink" style="font-size:clamp(20px,4vw,32px);font-weight:900;line-height:1.15;margin-bottom:12px">${esc(c.title)||'Sem título'}</h1>
+            ${c.synopsis?`<p style="color:#d6d0c4;font-size:14px;line-height:1.7;max-width:620px;font-family:Georgia,serif;font-style:italic">${esc(c.synopsis)}</p>`:''}
+          </div>
+          <div style="display:flex;gap:8px;flex-shrink:0;flex-wrap:wrap" class="hero-actions">
+            <button class="btn-ghost" onclick="goList()">← Voltar</button>
+            <button class="btn-ghost" onclick="exportPDF()">📄 PDF</button>
+            <button class="btn-primary" onclick="goEdit()">✏️ Editar</button>
+          </div>
+        </div>
+        <div class="stats-bar">
+          ${[['NPCs',c.npcs.length],['Locais',c.locations.length],['Itens',c.items.length],['Sessões',c.sessions],['Jogadas',jogadas]].map(([l,v])=>`
+          <div style="text-align:center"><div class="stat-num">${v}</div><div class="stat-label">${l}</div></div>`).join('')}
+        </div>
+      </div>
+      <div class="detail-tabs">
+        ${tabs.map(t=>`<button class="btn-tab ${activeDetailTab===t.k?'active':''}" onclick="switchDetailTab('${t.k}')">${t.l}</button>`).join('')}
+      </div>
+      <div class="fade-in">${body}</div>
+    </div>`;
+}
+
+function bindDetail() {}
+
+/* ═══════════════════════════════════════
+   MESA MODE
+═══════════════════════════════════════ */
+function openMesa(sessId) {
+  mesaSessionId = sessId;
+  renderMesa();
+  document.getElementById('mesa-overlay').style.display='flex';
+  initMesaSwipe();
+}
+function closeMesa() {
+  document.getElementById('mesa-overlay').style.display='none';
+  mesaSessionId = null;
+  render();
+}
+function mesaNavSession(dir) {
+  const c = camps.find(x=>x.id===viewingId);
+  if (!c) return;
+  const idx = c.sessions_data.findIndex(x=>x.id===mesaSessionId);
+  const next = c.sessions_data[idx+dir];
+  if (!next) return;
+  mesaSessionId = next.id;
+  renderMesa();
+}
+function renderMesa() {
+  const c = camps.find(x=>x.id===viewingId);
+  const s = c?.sessions_data.find(x=>x.id===mesaSessionId);
+  if (!c||!s) return;
+  const idx = c.sessions_data.findIndex(x=>x.id===mesaSessionId);
+  const hasPrev = idx > 0;
+  const hasNext = idx < c.sessions_data.length-1;
+
+  document.getElementById('mesa-top').innerHTML = `
+    <div class="session-num">${String(s.number).padStart(2,'0')}</div>
+    <div style="flex:1;min-width:0">
+      <div style="font-size:10px;color:#7a7060;letter-spacing:.15em;text-transform:uppercase">Modo Mesa · ${esc(c.title)}</div>
+      <div class="serif ink" style="font-size:18px;font-weight:700;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">${esc(s.title)||'Sessão '+s.number}</div>
+    </div>
+    <div style="display:flex;gap:6px;align-items:center;flex-wrap:wrap">
+      ${['Pendente','Jogada','Pulada'].map(st=>`
+        <button class="sess-status-btn" style="color:${s.status===st?'#ede8dc':'#7a7060'};border-color:${s.status===st?'#c0392b':'#302c24'};background:${s.status===st?'#c0392b22':'none'}"
+          onclick="mesaSetStatus('${st}')">${st}</button>`).join('')}
+      <button class="btn-ghost" onclick="closeMesa()">✕ Fechar</button>
+    </div>`;
+
+  // Session nav bar
+  let navBar = document.getElementById('mesa-sess-nav');
+  if (!navBar) {
+    navBar = document.createElement('div');
+    navBar.id = 'mesa-sess-nav';
+    navBar.className = 'mesa-sess-nav';
+    document.getElementById('mesa-top').after(navBar);
+  }
+  navBar.innerHTML = `
+    <button class="mesa-nav-btn" onclick="mesaNavSession(-1)" ${hasPrev?'':'disabled'}>◀ Anterior</button>
+    <span style="color:#7a7060;font-size:11px;letter-spacing:.08em">${idx+1} / ${c.sessions_data.length}</span>
+    <button class="mesa-nav-btn" onclick="mesaNavSession(1)" ${hasNext?'':'disabled'}>Próxima ▶</button>`;
+
+  const cluesHtml = (s.clues||[]).map(cl=>{
+    const cc = CLUE_COLORS[cl.type||'Física']||'#b8860b';
+    return `
+    <div class="mesa-pista" onclick="mesaToggleClue('${cl.id}')">
+      <div class="pista-check ${cl.found?'done':''}">${cl.found?'✓':''}</div>
+      <div style="flex:1;min-width:0">
+        <span style="display:inline-block;padding:1px 6px;border-radius:2px;font-size:9px;background:${cc}22;border:1px solid ${cc}44;color:${cc};text-transform:uppercase;letter-spacing:.06em;margin-bottom:2px">${esc(cl.type||'Física')}</span>
+        <div style="color:${cl.found?'#7a7060':'#d6d0c4'};font-size:13px;line-height:1.5;text-decoration:${cl.found?'line-through':'none'}">${esc(cl.text)||'<em style="color:#7a7060">Sem texto</em>'}</div>
+      </div>
+    </div>`;
+  }).join('');
+
+  // Use linked NPCs if set, otherwise show all
+  const linkedNpcs = (s.linkedNpcs||[]).length > 0
+    ? c.npcs.filter(n=>(s.linkedNpcs||[]).includes(n.id))
+    : c.npcs;
+
+  const npcsHtml = linkedNpcs.map(n=>{
+    const nid='mn-'+n.id;
+    return `
+    <div style="border-bottom:1px solid #302c24;padding:8px 0">
+      <div style="display:flex;align-items:center;gap:8px;cursor:pointer" onclick="mesaToggle('${nid}')">
+        <span id="arr-${nid}" style="color:#7a7060;font-size:10px;transition:transform .2s;display:inline-block">▶</span>
+        <div style="flex:1;min-width:0">
+          <div style="color:#ede8dc;font-size:13px;font-weight:700">${esc(n.name)||'Sem nome'}</div>
+          ${n.role?`<div style="color:#b8860b;font-size:11px;text-transform:uppercase;letter-spacing:.06em">${esc(n.role)}</div>`:''}
+        </div>
+      </div>
+      <div id="${nid}" style="display:none;padding-top:8px;padding-left:4px">
+        ${n.description?`<p style="color:#c0b8b0;font-size:12px;line-height:1.6;font-family:Georgia,serif;margin-bottom:6px">${nl(n.description)}</p>`:''}
+        ${n.rituals?`<div style="background:#7c3aed18;border:1px solid #7c3aed44;border-radius:2px;padding:6px 10px;margin-bottom:6px"><div style="font-size:9px;color:#a78bfa;letter-spacing:.1em;text-transform:uppercase;margin-bottom:3px">⚡ Rituais / Habilidades</div><div style="color:#c4b5fd;font-size:12px;line-height:1.5">${nl(n.rituals)}</div></div>`:''}
+        ${n.sanity?`<div style="background:#0e749018;border:1px solid #0e749044;border-radius:2px;padding:5px 10px;margin-bottom:6px"><div style="font-size:9px;color:#67e8f9;letter-spacing:.1em;text-transform:uppercase;margin-bottom:2px">🧠 Sanidade</div><div style="color:#a5f3fc;font-size:12px">${esc(n.sanity)}</div></div>`:''}
+        ${n.secret?`<div style="background:#7f1d1d18;border:1px solid #7f1d1d55;border-radius:2px;padding:6px 10px"><div style="font-size:9px;color:#c0392b;letter-spacing:.1em;text-transform:uppercase;margin-bottom:2px">🔒 Segredo</div><div style="color:#c0a0a0;font-size:12px;line-height:1.5">${nl(n.secret)}</div></div>`:''}
+      </div>
+    </div>`;
+  }).join('');
+
+  // Use linked locations if set, otherwise show all
+  const linkedLocs = (s.linkedLocs||[]).length > 0
+    ? c.locations.filter(l=>(s.linkedLocs||[]).includes(l.id))
+    : c.locations;
+
+  const locsHtml = linkedLocs.map(l=>{
+    const rooms = (l.rooms||[]);
+    const locId = 'ml-'+l.id;
+    return `
+    <div style="border-bottom:1px solid #302c24;padding:8px 0">
+      <!-- Location header — click to expand -->
+      <div style="display:flex;align-items:center;gap:8px;cursor:pointer" onclick="mesaToggle('${locId}')">
+        <span id="arr-${locId}" style="color:#7a7060;font-size:10px;transition:transform .2s;display:inline-block">▶</span>
+        <div style="flex:1;min-width:0">
+          <div style="color:#ede8dc;font-size:13px;font-weight:700">${esc(l.name)||'Sem nome'}</div>
+          ${l.type?`<div style="color:#7a7060;font-size:11px">${esc(l.type)} · ${rooms.length} cômodo${rooms.length!==1?'s':''}</div>`:''}
+        </div>
+        ${dangerPill(l.danger)}
+      </div>
+      <!-- Expandable content -->
+      <div id="${locId}" style="display:none;margin-top:8px;padding-left:4px">
+        ${l.description?`<p style="color:#c0b8b0;font-size:12px;line-height:1.6;font-family:Georgia,serif;margin-bottom:8px">${nl(l.description)}</p>`:''}
+        ${l.secret?`
+          <div style="background:#7f1d1d18;border:1px solid #7f1d1d55;border-radius:2px;padding:7px 10px;margin-bottom:8px">
+            <div style="font-size:9px;color:#c0392b;letter-spacing:.12em;text-transform:uppercase;margin-bottom:3px">🔒 Segredo do Local</div>
+            <div style="color:#c0a0a0;font-size:12px;line-height:1.5">${nl(l.secret)}</div>
+          </div>` : ''}
+        ${rooms.map(r=>{
+          const roomId = 'mr-'+r.id;
+          const ROOM_IC = {sala:'🛋',quarto:'🛏',cozinha:'🍳',banheiro:'🚿',jardim:'🌿',garagem:'🚗',corredor:'🚪',porao:'🕯',sotao:'🕷',escritorio:'💼',laboratorio:'⚗️',deposito:'📦',outro:'📍'};
+          const ITEM_IC = {objeto:'📦',pista:'🔍',perigo:'⚠️',npc:'👤',passagem:'🚪',paranormal:'👁',nota:'📝'};
+          const DANGER_C = {'Sem Perigo':'#7a7060',Baixo:'#276749',Médio:'#b8860b',Alto:'#e65c00',Extremo:'#c0392b'};
+          const dc = DANGER_C[r.danger]||'#7a7060';
+          const items = r.items||[];
+          return `
+          <div style="background:#080706;border:1px solid #2c2820;border-left:3px solid ${dc};border-radius:2px;margin-bottom:6px;overflow:hidden">
+            <div style="display:flex;align-items:center;gap:8px;padding:8px 10px;cursor:pointer" onclick="mesaToggle('${roomId}')">
+              <span id="arr-${roomId}" style="color:#7a7060;font-size:10px;transition:transform .2s;display:inline-block">▶</span>
+              <span style="font-size:14px">${ROOM_IC[r.type]||'📍'}</span>
+              <div style="flex:1;min-width:0">
+                <div style="color:#ede8dc;font-size:12px;font-weight:700">${esc(r.name)||'Sem nome'}</div>
+                ${r.danger&&r.danger!=='Sem Perigo'?`<div style="color:${dc};font-size:10px;text-transform:uppercase;letter-spacing:.06em">${r.danger}</div>`:''}
+              </div>
+              ${items.length?`<span style="color:#7a7060;font-size:10px;flex-shrink:0">${items.length} elem.</span>`:''}
+            </div>
+            <div id="${roomId}" style="display:none;padding:0 10px 10px">
+              ${r.description?`<p style="color:#c0b8b0;font-size:12px;line-height:1.6;font-family:Georgia,serif;margin-bottom:6px">${nl(r.description)}</p>`:''}
+              ${r.atmosphere?`<div style="color:#7a7060;font-size:12px;font-style:italic;padding:5px 8px;border-left:2px solid #302c24;margin-bottom:6px">🌫 ${esc(r.atmosphere)}</div>`:''}
+              ${r.secret?`
+                <div style="background:#7f1d1d18;border:1px solid #7f1d1d55;border-radius:2px;padding:6px 10px;margin-bottom:6px">
+                  <div style="font-size:9px;color:#c0392b;letter-spacing:.12em;text-transform:uppercase;margin-bottom:2px">🔒 Segredo</div>
+                  <div style="color:#c0a0a0;font-size:12px;line-height:1.5">${nl(r.secret)}</div>
+                </div>` : ''}
+              ${items.length?items.map(it=>`
+                <div style="display:flex;gap:8px;align-items:flex-start;padding:5px 0;border-top:1px solid #1c1a16">
+                  <span style="font-size:12px;flex-shrink:0">${ITEM_IC[it.cat]||'📦'}</span>
+                  <div style="flex:1;min-width:0">
+                    <div style="color:#ede8dc;font-size:12px;font-weight:700">${esc(it.name)}</div>
+                    ${it.desc?`<div style="color:#9a9088;font-size:11px;line-height:1.5">${nl(it.desc)}</div>`:''}
+                    ${it.secret?`<div style="color:#c0392b;font-size:11px;margin-top:2px">🔒 ${esc(it.secret)}</div>`:''}
+                  </div>
+                </div>`).join('') : ''}
+            </div>
+          </div>`;
+        }).join('')}
+      </div>
+    </div>`;
+  }).join('');
+
+  const a = c.antagonist;
+  const antaHtml = a?.name ? `
+    <div class="mesa-card" style="border-color:#7f1d1d44">
+      <div class="mesa-card-title">☠ Antagonista</div>
+      <div class="serif ink" style="font-size:16px;font-weight:700;margin-bottom:8px">${esc(a.name)}</div>
+      ${a.nature?`<div style="color:#7a7060;font-size:12px;margin-bottom:4px"><span style="color:#c0392b">Natureza:</span> ${esc(a.nature)}</div>`:''}
+      ${a.motivation?`<div style="color:#7a7060;font-size:12px;margin-bottom:4px"><span style="color:#c0392b">Motivação:</span> ${esc(a.motivation)}</div>`:''}
+      ${a.power?`<div style="color:#7a7060;font-size:12px"><span style="color:#c0392b">Poder:</span> ${esc(a.power)}</div>`:''}
+    </div>` : '';
+
+  const itemsHtml = c.items.length ? c.items.map(item=>`
+    <div style="display:flex;gap:8px;align-items:flex-start;padding:7px 0;border-bottom:1px solid #302c24">
+      <div style="flex:1;min-width:0">
+        <div style="color:#ede8dc;font-size:12px;font-weight:700">${esc(item.name)}</div>
+        ${item.type?`<div style="color:#a78bfa;font-size:10px;text-transform:uppercase;letter-spacing:.06em">${esc(item.type)}</div>`:''}
+        ${item.description?`<div style="color:#9a9088;font-size:12px;line-height:1.5;margin-top:2px">${nl(item.description)}</div>`:''}
+        ${item.effect?`<div style="color:#c4b5fd;font-size:11px;margin-top:3px">⚡ ${nl(item.effect)}</div>`:''}
+      </div>
+    </div>`).join('') : '';
+
+  const quicknotes = s.quicknotes||'';
+
+  document.getElementById('mesa-body').innerHTML = `
+    ${s.opening?`<div style="background:#c0392b12;border:1px solid #c0392b33;border-left:3px solid #c0392b;border-radius:3px;padding:14px 16px;margin-bottom:16px"><div class="mesa-card-title">🎬 Abertura — leia em voz alta</div><p style="color:#d6c0b8;font-size:14px;line-height:1.8;font-family:Georgia,serif;font-style:italic;margin:0">${nl(s.opening)}</p></div>`:''}
+    ${s.synopsis?`<div style="background:#0f0e0c;border:1px solid #2c2820;border-left:3px solid #c0392b;border-radius:3px;padding:14px 16px;margin-bottom:16px"><div class="mesa-card-title">Sinopse</div><p class="body-text" style="margin:0;font-style:italic">${nl(s.synopsis)}</p></div>`:''}
+    <div class="mesa-grid">
+      ${s.objectives?`<div class="mesa-card"><div class="mesa-card-title">🎯 Objetivos</div><p class="body-text" style="margin:0">${nl(s.objectives)}</p></div>`:''}
+      ${(s.scenes||[]).length?`
+        <div class="mesa-card" style="grid-column:1/-1">
+          <div class="mesa-card-title">🎬 Cenas da Sessão</div>
+          ${(s.scenes||[]).map((sc,i)=>{
+            const col=SCENE_COLORS[sc.type]||'#b8860b';
+            const ic=SCENE_ICONS[sc.type]||'🎬';
+            const scid='msc-'+sc.id;
+            return `<div style="border-bottom:1px solid #302c24;padding:8px 0">
+              <div style="display:flex;align-items:center;gap:8px;cursor:pointer" onclick="mesaToggle('${scid}')">
+                <span id="arr-${scid}" style="color:#7a7060;font-size:10px;transition:transform .2s;display:inline-block">▶</span>
+                <span style="font-size:10px;font-weight:700;color:${col};font-family:'Share Tech Mono',monospace;flex-shrink:0">C${String(i+1).padStart(2,'0')}</span>
+                <span style="flex:1;color:#ede8dc;font-size:13px;font-weight:700">${esc(sc.name)||'Sem nome'}</span>
+                <span style="display:inline-block;padding:1px 7px;border-radius:2px;font-size:10px;background:${col}22;border:1px solid ${col}44;color:${col};text-transform:uppercase;letter-spacing:.06em;flex-shrink:0">${ic} ${esc(sc.type)}</span>
+              </div>
+              ${sc.description?`<div id="${scid}" style="display:none;padding-top:6px;padding-left:20px"><p class="body-text" style="margin:0;font-size:12px">${nl(sc.description)}</p></div>`:''}
+            </div>`;
+          }).join('')}
+        </div>` : ''}
+        <div class="mesa-card-title">🔍 Pistas</div>
+        ${cluesHtml||'<div style="color:#7a7060;font-size:12px">Nenhuma pista cadastrada</div>'}
+      </div>
+      <div class="mesa-card" style="border-color:#c0392b33">
+        <div class="mesa-card-title" style="margin-bottom:8px">✏️ Notas Rápidas da Sessão</div>
+        <textarea id="mesa-quicknotes" placeholder="Improviso, nome criado na hora, decisão dos jogadores..."
+          style="width:100%;background:#080706;border:1px solid #2c2820;color:#d6d0c4;font-family:'Share Tech Mono',monospace;font-size:12px;padding:8px;border-radius:2px;outline:none;resize:none;min-height:80px;line-height:1.6"
+          oninput="mesaSaveQuicknotes(this.value)">${esc(quicknotes)}</textarea>
+      </div>
+      ${antaHtml}
+      ${linkedNpcs.length?`<div class="mesa-card"><div class="mesa-card-title">👤 NPCs${(s.linkedNpcs||[]).length?` desta sessão`:`da campanha`}</div>${npcsHtml}</div>`:''}
+      ${linkedLocs.length?`<div class="mesa-card" style="grid-column:1/-1"><div class="mesa-card-title">📍 Locais${(s.linkedLocs||[]).length?` desta sessão`:`da campanha`} — clique para expandir</div>${locsHtml}</div>`:''}
+      ${c.items.length?`<div class="mesa-card"><div class="mesa-card-title">🗡 Itens & Artefatos</div>${itemsHtml}</div>`:''}
+      ${s.rewards?`<div class="mesa-card"><div class="mesa-card-title">🏆 Recompensas</div><p class="body-text" style="margin:0">${nl(s.rewards)}</p></div>`:''}
+      ${s.hook?`<div class="mesa-card" style="border-color:#0e749033"><div class="mesa-card-title" style="color:#67e8f9">🪝 Gancho para Próxima Sessão</div><p style="color:#a5f3fc;font-size:13px;line-height:1.7;font-family:Georgia,serif;margin:0">${nl(s.hook)}</p></div>`:''}
+      ${s.notes?`<div class="mesa-card" style="border-color:#b8860b44"><div class="mesa-card-title">📝 Notas do Mestre</div><p style="color:#d4b26a;font-size:13px;line-height:1.7;margin:0;font-family:Georgia,serif">${nl(s.notes)}</p></div>`:''}
+    </div>`;
+}
+
+// ── Toggle expandable sections in Mesa ────────────────────────
+function mesaToggle(id) {
+  const el  = document.getElementById(id);
+  const arr = document.getElementById('arr-'+id);
+  if (!el) return;
+  const open = el.style.display !== 'none';
+  el.style.display  = open ? 'none' : 'block';
+  if (arr) arr.style.transform = open ? 'rotate(0deg)' : 'rotate(90deg)';
+}
+function initMesaSwipe() {
+  const el = document.getElementById('mesa-overlay');
+  let startX=0, startY=0, moved=false;
+  el.addEventListener('touchstart', e=>{
+    startX=e.touches[0].clientX; startY=e.touches[0].clientY; moved=false;
+  },{passive:true});
+  el.addEventListener('touchmove', e=>{
+    const dx=Math.abs(e.touches[0].clientX-startX);
+    const dy=Math.abs(e.touches[0].clientY-startY);
+    if(dx>dy&&dx>20) moved=true;
+  },{passive:true});
+  el.addEventListener('touchend', e=>{
+    if(!moved) return;
+    const dx=e.changedTouches[0].clientX-startX;
+    if(Math.abs(dx)<60) return;
+    // swipe left = next, swipe right = prev
+    mesaNavSession(dx<0?1:-1);
+  },{passive:true});
+}
+
+function mesaSaveQuicknotes(val) {
+  const c = camps.find(x=>x.id===viewingId);
+  const s = c?.sessions_data.find(x=>x.id===mesaSessionId);
+  if (!s) return;
+  s.quicknotes = val;
+  persist();
+}
+function mesaSetStatus(st) {
+  const c = camps.find(x=>x.id===viewingId);
+  const s = c?.sessions_data.find(x=>x.id===mesaSessionId);
+  if (!s) return;
+  s.status = st; persist(); renderMesa();
+}
+function mesaToggleClue(clueId) {
+  const c = camps.find(x=>x.id===viewingId);
+  const s = c?.sessions_data.find(x=>x.id===mesaSessionId);
+  const cl = s?.clues?.find(x=>x.id===clueId);
+  if (!cl) return;
+  cl.found = !cl.found; persist(); renderMesa();
+}
+
+/* ═══════════════════════════════════════
+   NAVIGATION
+═══════════════════════════════════════ */
+function goList()   { view='list';   viewingId=null; editingId=null; activeDetailTab='overview'; render(); }
+function goCreate() { if (!guardNewCamp()) return; editingId=null; formData=blankCamp(); syncSessionsData(1); activeFormTab='info'; view='form'; render(); }
+function goDetail(id) { viewingId=id; activeDetailTab='overview'; view='detail'; render(); }
+function goEdit()   { editingId=viewingId; formData=JSON.parse(JSON.stringify(camps.find(c=>c.id===viewingId))); activeFormTab='info'; view='form'; render(); }
+function cancelForm(){ view = viewingId?'detail':'list'; render(); }
+
+function switchFormTab(tab) { saveFormState(); activeFormTab=tab; render(); document.querySelector('.form-body')?.scrollTo({top:0,behavior:'smooth'}); }
+function switchDetailTab(tab) { activeDetailTab=tab; render(); window.scrollTo({top:0,behavior:'smooth'}); }
+
+document.getElementById('logo-btn').addEventListener('click', goList);
+
+/* ═══════════════════════════════════════
+   FORM STATE SAVE (on tab switch)
+═══════════════════════════════════════ */
+function saveFormState() {
+  if (!formData) return;
+  // info tab
+  const t = v => document.getElementById(v);
+  if (t('f-title'))    formData.title    = t('f-title').value;
+  if (t('f-sessions')) { const n=parseInt(t('f-sessions').value)||1; syncSessionsData(n); formData.sessions=n; }
+  if (t('f-status'))   formData.status   = t('f-status').value;
+  if (t('f-nex'))      formData.nex      = t('f-nex').value;
+  if (t('f-synopsis')) formData.synopsis = t('f-synopsis').value;
+  if (t('f-notes'))    formData.notes    = t('f-notes').value;
+  // antagonist
+  if (t('a-name'))       formData.antagonist.name       = t('a-name').value;
+  if (t('a-nature'))     formData.antagonist.nature     = t('a-nature').value;
+  if (t('a-motivation')) formData.antagonist.motivation = t('a-motivation').value;
+  if (t('a-power'))      formData.antagonist.power      = t('a-power').value;
+}
+
+function saveForm() {
+  saveFormState();
+  if (!formData.title.trim()) { showToast('Insira um título para a campanha.','err'); return; }
+  if (editingId) {
+    const idx = camps.findIndex(c=>c.id===editingId);
+    if (idx>=0) camps[idx] = formData;
+  } else {
+    camps.unshift(formData);
+  }
+  persist();
+  viewingId = formData.id;
+  view = 'detail'; editingId=null; activeDetailTab='overview';
+  render(); showToast('Campanha salva!');
+}
+
+/* ═══════════════════════════════════════
+   ENTRY HELPERS
+═══════════════════════════════════════ */
+function toggleEntry(bodyId, arrowId) {
+  const b = document.getElementById(bodyId);
+  const a = document.getElementById(arrowId);
+  if (!b) return;
+  const open = b.style.display !== 'none';
+  b.style.display = open ? 'none' : 'block';
+  if (a) a.style.transform = open ? 'rotate(0deg)' : 'rotate(90deg)';
+}
+
+function addEntry(type) {
+  saveFormState();
+  if (type==='npcs')      formData.npcs.push(blankNPC());
+  if (type==='locations') formData.locations.push(blankLoc());
+  if (type==='items')     formData.items.push(blankItem());
+  render();
+}
+function delEntry(type, id) {
+  saveFormState();
+  formData[type] = formData[type].filter(x=>x.id!==id);
+  render();
+}
+function setEntryField(type, id, field, val) {
+  const entry = (formData[type]||[]).find(x=>x.id===id);
+  if (entry) entry[field] = val;
+}
+
+function renderSceneRow(sessId, sc, idx) {
+  const col = SCENE_COLORS[sc.type]||'#b8860b';
+  const ic  = SCENE_ICONS[sc.type]||'🎬';
+  return `
+  <div id="scrow-${sc.id}" style="background:#0a0908;border:1px solid #2c2820;border-left:3px solid ${col};border-radius:2px;padding:10px 12px;margin-bottom:8px">
+    <div style="display:flex;gap:8px;align-items:center;margin-bottom:8px;flex-wrap:wrap">
+      <span style="font-size:10px;font-weight:700;color:${col};flex-shrink:0;font-family:'Share Tech Mono',monospace">C${String(idx+1).padStart(2,'0')}</span>
+      <input value="${esc(sc.name)}" oninput="setSceneField('${sessId}','${sc.id}','name',this.value)"
+        placeholder="Nome da cena..." style="flex:1;min-width:120px"/>
+      <select onchange="setSceneField('${sessId}','${sc.id}','type',this.value);refreshSceneRow('${sessId}','${sc.id}')"
+        style="width:130px;flex-shrink:0;font-size:11px;padding:5px 6px">
+        ${SCENE_TYPES.map(t=>`<option value="${t}"${t===sc.type?' selected':''}>${SCENE_ICONS[t]} ${t}</option>`).join('')}
+      </select>
+      <button class="btn-del" onclick="delScene('${sessId}','${sc.id}')">✕</button>
+    </div>
+    <textarea rows="2" oninput="setSceneField('${sessId}','${sc.id}','description',this.value)"
+      placeholder="O que acontece nesta cena? Como o mestre narra? Qual o gatilho de início?"
+      style="resize:vertical">${esc(sc.description)}</textarea>
+  </div>`;
+}
+function addScene(sessId) {
+  const s = formData.sessions_data.find(x=>x.id===sessId);
+  if (!s) return;
+  if (!s.scenes) s.scenes=[];
+  s.scenes.push(blankScene(s.scenes.length+1));
+  // re-render only the scenes container
+  const container = document.getElementById('scenes-'+sessId);
+  if (container) {
+    container.innerHTML = s.scenes.map((sc,i)=>renderSceneRow(sessId,sc,i)).join('');
+  }
+}
+function delScene(sessId, scId) {
+  const s = formData.sessions_data.find(x=>x.id===sessId);
+  if (!s) return;
+  s.scenes = (s.scenes||[]).filter(x=>x.id!==scId);
+  // re-render container with updated numbers
+  const container = document.getElementById('scenes-'+sessId);
+  if (container) {
+    container.innerHTML = s.scenes.map((sc,i)=>renderSceneRow(sessId,sc,i)).join('');
+  }
+}
+function setSceneField(sessId, scId, field, val) {
+  const s = formData.sessions_data.find(x=>x.id===sessId);
+  const sc = (s?.scenes||[]).find(x=>x.id===scId);
+  if (sc) sc[field] = val;
+}
+function refreshSceneRow(sessId, scId) {
+  // update border color and number icon when type changes
+  const s = formData.sessions_data.find(x=>x.id===sessId);
+  const sc = (s?.scenes||[]).find(x=>x.id===scId);
+  const el = document.getElementById('scrow-'+scId);
+  if (!sc||!el) return;
+  const col = SCENE_COLORS[sc.type]||'#b8860b';
+  el.style.borderLeftColor = col;
+  const num = el.querySelector('span');
+  if (num) num.style.color = col;
+}
+function setSessField(sessId, field, val) {
+  const s = formData.sessions_data.find(x=>x.id===sessId);
+  if (s) s[field] = val;
+}
+function toggleLinked(type, sessId, itemId, checked) {
+  const s = formData.sessions_data.find(x=>x.id===sessId);
+  if (!s) return;
+  const key = type==='loc' ? 'linkedLocs' : 'linkedNpcs';
+  if (!s[key]) s[key] = [];
+  if (checked) { if (!s[key].includes(itemId)) s[key].push(itemId); }
+  else { s[key] = s[key].filter(id=>id!==itemId); }
+}
+function addClue(sessId) {
+  const s = formData.sessions_data.find(x=>x.id===sessId);
+  if (!s) return;
+  s.clues.push(blankClue());
+  const container = document.getElementById('clues-'+sessId);
+  if (container) {
+    container.innerHTML = s.clues.map(cl=>`
+      <div style="display:flex;flex-direction:column;gap:6px;margin-bottom:12px;padding:10px;background:#0a0908;border:1px solid #2c2820;border-radius:2px" id="clue-row-${cl.id}">
+        <div style="display:flex;gap:8px;align-items:center">
+          <select onchange="setClueField('${sessId}','${cl.id}','type',this.value)" style="flex:1;font-size:12px;padding:6px 8px;background:#0c0b09;border:1px solid #2c2820;color:#d6d0c4;border-radius:2px;outline:none">
+            ${CLUE_TYPES.map(t=>`<option${t===(cl.type||'Física')?' selected':''}>${t}</option>`).join('')}
+          </select>
+          <button class="btn-del" onclick="delClue('${sessId}','${cl.id}')">✕</button>
+        </div>
+        <textarea rows="2" style="resize:vertical;min-height:48px;background:#0c0b09;border:1px solid #2c2820;color:#d6d0c4;font-family:'Share Tech Mono',monospace;font-size:13px;padding:9px 12px;border-radius:2px;outline:none;width:100%" placeholder="Descreva a pista..." onchange="setClue('${sessId}','${cl.id}',this.value)">${esc(cl.text)}</textarea>
+      </div>`).join('');
+  }
+}
+function setClue(sessId, clueId, val) {
+  const s = formData.sessions_data.find(x=>x.id===sessId);
+  const cl = s?.clues?.find(x=>x.id===clueId);
+  if (cl) cl.text = val;
+}
+function setClueField(sessId, clueId, field, val) {
+  const s = formData.sessions_data.find(x=>x.id===sessId);
+  const cl = s?.clues?.find(x=>x.id===clueId);
+  if (cl) cl[field] = val;
+}
+function delClue(sessId, clueId) {
+  const s = formData.sessions_data.find(x=>x.id===sessId);
+  if (!s) return;
+  s.clues = s.clues.filter(x=>x.id!==clueId);
+  const row = document.getElementById('clue-row-'+clueId);
+  if (row) row.remove();
+}
+function syncSessionsData(n) {
+  const cur = formData.sessions_data || [];
+  // free limit: max 3 sessions
+  const limit = isPremium ? n : Math.min(n, FREE_SESS_LIMIT);
+  if (!isPremium && n > FREE_SESS_LIMIT) {
+    showPaywall('sess');
+    // snap the input back
+    const inp = document.getElementById('f-sessions');
+    if (inp) inp.value = FREE_SESS_LIMIT;
+    n = FREE_SESS_LIMIT;
+  }
+  if (limit > cur.length) {
+    for (let i=cur.length; i<limit; i++) cur.push(blankSess(i+1));
+  } else {
+    cur.splice(limit);
+  }
+  formData.sessions_data = cur;
+  formData.sessions = limit;
+}
+
+/* ═══════════════════════════════════════
+   DELETE
+═══════════════════════════════════════ */
+function askDelete(id) {
+  delTargetId = id;
+  document.getElementById('modal-del').style.display='flex';
+}
+function closeDelModal() { document.getElementById('modal-del').style.display='none'; }
+document.getElementById('btn-del-confirm').onclick = () => {
+  camps = camps.filter(c=>c.id!==delTargetId);
+  if (viewingId===delTargetId) { viewingId=null; view='list'; }
+  persist(); closeDelModal(); render();
+};
+
+/* ═══════════════════════════════════════
+   EXPORT / IMPORT JSON
+═══════════════════════════════════════ */
+function exportJSON() {
+  const blob = new Blob([JSON.stringify(camps,null,2)],{type:'application/json'});
+  const a = document.createElement('a');
+  a.href = URL.createObjectURL(blob);
+  a.download = 'painel-campanhas-'+new Date().toISOString().slice(0,10)+'.json';
+  a.click(); showToast('JSON exportado!');
+}
+function importJSON(input) {
+  const f = input.files[0]; if (!f) return;
+  const r = new FileReader();
+  r.onload = e => {
+    try {
+      const imp = JSON.parse(e.target.result);
+      if (!Array.isArray(imp)) throw 0;
+      const merged = [...imp, ...camps.filter(c=>!imp.find(i=>i.id===c.id))];
+      camps = merged; persist(); render();
+      showToast(imp.length+' campanha'+(imp.length!==1?'s':'')+' importada'+(imp.length!==1?'s':'')+'!');
+    } catch { showToast('Arquivo inválido.','err'); }
+  };
+  r.readAsText(f); input.value='';
+}
+
+/* ═══════════════════════════════════════
+   PDF EXPORT
+═══════════════════════════════════════ */
+function exportPDF() {
+  if (!guardPDF()) return;
+  const c = camps.find(x=>x.id===viewingId);
+  if (!c) return;
+
+  const sc = (s,col='#c0392b') => `<div style="margin:28px 0 12px;padding-bottom:6px;border-bottom:2px solid ${col}22;display:flex;align-items:center;gap:10px"><span style="width:8px;height:8px;border-radius:50%;background:${col};display:inline-block"></span><span style="font-family:'Playfair Display',Georgia,serif;font-size:15px;font-weight:900;color:#ede8dc;text-transform:uppercase;letter-spacing:.04em">${s}</span></div>`;
+  const pill = (l,col) => `<span style="display:inline-block;padding:2px 8px;border-radius:2px;font-size:10px;letter-spacing:.08em;text-transform:uppercase;font-weight:700;background:${col}22;border:1px solid ${col}55;color:${col}">${l}</span>`;
+  const block = (l,v,col='#7a7060') => v ? `<div style="margin-bottom:10px"><div style="font-size:9px;letter-spacing:.16em;text-transform:uppercase;color:${col};font-weight:700;margin-bottom:3px">${l}</div><div style="color:#c8c0b8;font-size:13px;line-height:1.7;font-family:Georgia,serif">${nl(v)}</div></div>` : '';
+  const sColor = s => ({'Em Andamento':'#276749','Concluída':'#b8860b','Pausada':'#7a7060','Planejada':'#c0392b'}[s]||'#7a7060');
+  const dColor = d => ({'Baixo':'#276749','Médio':'#b8860b','Alto':'#e65c00','Extremo':'#c0392b'}[d]||'#7a7060');
+  const stColor= s => ({'Jogada':'#276749','Pulada':'#b8860b','Pendente':'#7a7060'}[s]||'#7a7060');
+  const jogadas = (c.sessions_data||[]).filter(s=>s.status==='Jogada').length;
+
+  const cover = `
+<div style="page-break-after:always;min-height:100vh;display:flex;flex-direction:column;justify-content:center;padding:60px;background:linear-gradient(135deg,#0c0b09 60%,#1a0a08)">
+  <div style="font-size:11px;letter-spacing:.28em;text-transform:uppercase;color:#c0392b;margin-bottom:18px;font-family:'Share Tech Mono',monospace">☠ ORDEM PARANORMAL — DOSSIÊ DE CAMPANHA</div>
+  <div style="font-family:'Playfair Display',Georgia,serif;font-size:52px;font-weight:900;color:#ede8dc;line-height:1.05;margin-bottom:18px;max-width:680px">${esc(c.title||'Sem Título')}</div>
+  ${c.synopsis?`<div style="font-size:15px;color:#a09890;line-height:1.8;max-width:580px;font-style:italic;margin-bottom:28px;border-left:3px solid #c0392b;padding-left:16px;font-family:Georgia,serif">${nl(c.synopsis)}</div>`:''}
+  <div style="display:flex;gap:10px;flex-wrap:wrap;margin-bottom:40px">
+    ${pill(c.status,sColor(c.status))} ${pill('NEX '+c.nex,'#7a7060')} ${pill(c.sessions+' sessão'+(c.sessions!==1?'s':''),'#7a7060')}
+  </div>
+  <div style="display:flex;gap:32px;flex-wrap:wrap;padding-top:28px;border-top:1px solid #2c2820">
+    ${[['NPCs',c.npcs.length],['Locais',c.locations.length],['Itens',c.items.length],['Sessões',c.sessions],['Jogadas',jogadas]].map(([l,v])=>`<div style="text-align:center"><div style="font-size:26px;color:#c0392b;font-weight:700;font-family:'Share Tech Mono',monospace">${v}</div><div style="font-size:9px;color:#7a7060;letter-spacing:.15em;text-transform:uppercase;margin-top:2px">${l}</div></div>`).join('')}
+  </div>
+  <div style="margin-top:40px;font-size:10px;color:#302c24;font-family:'Share Tech Mono',monospace">Gerado em ${new Date().toLocaleDateString('pt-BR',{day:'2-digit',month:'long',year:'numeric'})}</div>
+</div>`;
+
+  const anta = c.antagonist?.name ? `
+${sc('Antagonista Principal','#c0392b')}
+<div style="background:#7f1d1d12;border:1px solid #7f1d1d55;border-left:4px solid #c0392b;border-radius:3px;padding:20px;margin-bottom:10px">
+  <div style="font-family:'Playfair Display',Georgia,serif;font-size:22px;font-weight:900;color:#ede8dc;margin-bottom:4px">${esc(c.antagonist.name)}</div>
+  ${c.antagonist.nature?`<div style="font-size:11px;color:#c0392b;letter-spacing:.1em;text-transform:uppercase;margin-bottom:12px">${esc(c.antagonist.nature)}</div>`:''}
+  <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px">
+    ${block('Motivação',c.antagonist.motivation)} ${block('Poder Paranormal',c.antagonist.power)}
+  </div>
+</div>` : '';
+
+  const npcs = c.npcs.length ? `
+${sc('NPCs','#b8860b')}
+${c.npcs.map(n=>`<div style="background:#141210;border:1px solid #b8860b33;border-radius:3px;padding:14px;margin-bottom:8px;page-break-inside:avoid">
+  <div style="font-family:'Playfair Display',Georgia,serif;font-size:16px;font-weight:700;color:#ede8dc">${esc(n.name)}</div>
+  ${n.role?`<div style="font-size:10px;color:#b8860b;letter-spacing:.1em;text-transform:uppercase;margin:2px 0 8px">${esc(n.role)}</div>`:''}
+  ${n.description?`<div style="color:#c0b8b0;font-size:13px;line-height:1.7;font-family:Georgia,serif;margin-bottom:8px">${nl(n.description)}</div>`:''}
+  ${n.rituals?`<div style="background:#7c3aed18;border:1px solid #7c3aed44;border-radius:2px;padding:7px 10px;margin-bottom:6px"><div style="font-size:9px;color:#a78bfa;letter-spacing:.1em;text-transform:uppercase;margin-bottom:3px">⚡ Rituais / Habilidades</div><div style="color:#c4b5fd;font-size:12px;line-height:1.6">${nl(n.rituals)}</div></div>`:''}
+  ${n.sanity?`<div style="background:#0e749018;border:1px solid #0e749044;border-radius:2px;padding:6px 10px;margin-bottom:6px"><div style="font-size:9px;color:#67e8f9;letter-spacing:.1em;text-transform:uppercase;margin-bottom:2px">🧠 Impacto na Sanidade</div><div style="color:#a5f3fc;font-size:12px">${esc(n.sanity)}</div></div>`:''}
+  ${n.secret?`<div style="background:#7f1d1d18;border:1px solid #7f1d1d44;border-radius:2px;padding:7px 10px"><div style="font-size:9px;color:#c0392b;letter-spacing:.1em;text-transform:uppercase;margin-bottom:3px">🔒 Segredo</div><div style="color:#c0a0a0;font-size:12px;line-height:1.6">${nl(n.secret)}</div></div>`:''}
+</div>`).join('')}` : '';
+
+  const locs = c.locations.length ? `
+${sc('Locais','#276749')}
+${c.locations.map(l=>`<div style="background:#141210;border:1px solid #27674933;border-radius:3px;padding:14px;margin-bottom:12px;page-break-inside:avoid">
+  <div style="display:flex;align-items:center;justify-content:space-between;gap:10px;margin-bottom:8px">
+    <div><div style="font-family:'Playfair Display',Georgia,serif;font-size:16px;font-weight:700;color:#ede8dc">${esc(l.name)}</div>${l.type?`<div style="font-size:10px;color:#7a7060;letter-spacing:.08em;text-transform:uppercase;margin-top:2px">${esc(l.type)}</div>`:''}</div>
+    ${pill(l.danger||'Baixo',dColor(l.danger||'Baixo'))}
+  </div>
+  ${l.description?`<div style="color:#c0b8b0;font-size:13px;line-height:1.7;font-family:Georgia,serif;margin-bottom:${l.secret||l.rooms?.length?'8px':'0'}">${nl(l.description)}</div>`:''}
+  ${l.secret?`<div style="background:#7f1d1d18;border:1px solid #7f1d1d44;border-radius:2px;padding:7px 10px;margin-bottom:${l.rooms?.length?'10px':'0'}"><div style="font-size:9px;color:#c0392b;letter-spacing:.1em;text-transform:uppercase;margin-bottom:3px">🔒 Segredo</div><div style="color:#c0a0a0;font-size:12px;line-height:1.5">${nl(l.secret)}</div></div>`:''}
+  ${(l.rooms||[]).length?`
+    <div style="font-size:9px;letter-spacing:.16em;text-transform:uppercase;color:#276749;font-weight:700;margin-bottom:8px">Cômodos</div>
+    ${(l.rooms||[]).map(r=>{
+      const dc2={'Sem Perigo':'#7a7060','Baixo':'#276749','Médio':'#b8860b','Alto':'#e65c00','Extremo':'#c0392b'}[r.danger]||'#7a7060';
+      return `<div style="background:#0f0e0c;border:1px solid #2c2820;border-left:3px solid ${dc2};border-radius:2px;padding:10px 12px;margin-bottom:6px">
+        <div style="font-weight:700;color:#ede8dc;font-size:13px;margin-bottom:4px">${esc(r.name)||'Sem nome'} <span style="font-size:10px;color:${dc2};font-weight:400;text-transform:uppercase;letter-spacing:.06em;margin-left:4px">${r.type} · ${r.danger}</span></div>
+        ${r.description?`<div style="color:#c0b8b0;font-size:12px;line-height:1.6;font-family:Georgia,serif;margin-bottom:${r.atmosphere||r.secret||r.items?.length?'6px':'0'}">${nl(r.description)}</div>`:''}
+        ${r.atmosphere?`<div style="color:#7a7060;font-size:12px;font-style:italic;margin-bottom:${r.secret||r.items?.length?'6px':'0'}">🌫 ${esc(r.atmosphere)}</div>`:''}
+        ${r.secret?`<div style="background:#7f1d1d18;border:1px solid #7f1d1d44;border-radius:2px;padding:5px 8px;margin-bottom:${r.items?.length?'6px':'0'}"><span style="font-size:9px;color:#c0392b;text-transform:uppercase;letter-spacing:.08em">🔒 </span><span style="color:#c0a0a0;font-size:12px">${esc(r.secret)}</span></div>`:''}
+        ${(r.items||[]).map(it=>{const col3=({objeto:'#7a7060',pista:'#b8860b',perigo:'#c0392b',npc:'#276749',passagem:'#0e7490',paranormal:'#7c3aed',nota:'#4a4440'})[it.cat]||'#7a7060';return`<div style="display:flex;gap:8px;padding:4px 0;border-bottom:1px solid #1c1a16;align-items:flex-start"><span style="font-size:12px;flex-shrink:0">${({objeto:'📦',pista:'🔍',perigo:'⚠️',npc:'👤',passagem:'🚪',paranormal:'👁',nota:'📝'})[it.cat]||'📦'}</span><div style="flex:1"><div style="color:#ede8dc;font-size:12px;font-weight:700">${esc(it.name)}</div>${it.desc?`<div style="color:#9a9088;font-size:11px;line-height:1.5">${esc(it.desc)}</div>`:''}${it.secret?`<div style="color:#c0392b;font-size:11px">🔒 ${esc(it.secret)}</div>`:''}</div><span style="font-size:9px;padding:1px 5px;border-radius:2px;background:${col3}22;border:1px solid ${col3}44;color:${col3};text-transform:uppercase;flex-shrink:0">${it.cat}</span></div>`;}).join('')}
+      </div>`;
+    }).join('')}`:''}
+</div>`).join('')}` : '';
+
+  const items = c.items.length ? `
+${sc('Itens & Artefatos','#7c3aed')}
+${c.items.map(i=>`<div style="background:#141210;border:1px solid #7c3aed33;border-radius:3px;padding:14px;margin-bottom:8px;page-break-inside:avoid">
+  <div style="font-family:'Playfair Display',Georgia,serif;font-size:16px;font-weight:700;color:#ede8dc">${esc(i.name)}</div>
+  ${i.type?`<div style="font-size:10px;color:#a78bfa;letter-spacing:.08em;text-transform:uppercase;margin:2px 0 8px">${esc(i.type)}</div>`:''}
+  ${i.description?`<div style="color:#c0b8b0;font-size:13px;line-height:1.7;font-family:Georgia,serif;margin-bottom:${i.effect?'8px':'0'}">${nl(i.description)}</div>`:''}
+  ${i.effect?`<div style="background:#1e1b4b;border:1px solid #4c1d9544;border-radius:2px;padding:7px 10px"><div style="font-size:9px;color:#a78bfa;letter-spacing:.1em;text-transform:uppercase;margin-bottom:3px">⚡ Efeito</div><div style="color:#c4b5fd;font-size:12px;line-height:1.6">${nl(i.effect)}</div></div>`:''}
+</div>`).join('')}` : '';
+
+  const sessions = c.sessions_data.length ? `
+${sc('Sessões','#c0392b')}
+${c.sessions_data.map(s=>`<div style="background:#141210;border:1px solid #2c2820;border-radius:3px;margin-bottom:14px;overflow:hidden;page-break-inside:avoid">
+  <div style="background:linear-gradient(135deg,#1a1814,#c0392b12);padding:12px 16px;display:flex;align-items:center;gap:12px;border-bottom:1px solid #302c24">
+    <div style="width:38px;height:38px;border-radius:2px;background:#c0392b22;border:1px solid #c0392b44;display:flex;align-items:center;justify-content:center;color:#c0392b;font-size:14px;font-weight:700;font-family:'Share Tech Mono',monospace;flex-shrink:0">${String(s.number).padStart(2,'0')}</div>
+    <div style="flex:1"><div style="font-family:'Playfair Display',Georgia,serif;font-size:16px;font-weight:700;color:#ede8dc">${esc(s.title||'Sem título')}</div></div>
+    ${pill(s.status||'Pendente',stColor(s.status))}
+  </div>
+  <div style="padding:14px 16px">
+    ${s.opening?`<div style="background:#c0392b10;border:1px solid #c0392b33;border-left:3px solid #c0392b;border-radius:2px;padding:10px 14px;margin-bottom:12px"><div style="font-size:9px;color:#c0392b;letter-spacing:.1em;text-transform:uppercase;margin-bottom:4px">🎬 Abertura</div><div style="color:#d6c0b8;font-size:13px;line-height:1.7;font-family:Georgia,serif;font-style:italic">${nl(s.opening)}</div></div>`:''}
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:14px">
+      ${block('Sinopse',s.synopsis)} ${block('Objetivos',s.objectives)} ${block('Recompensas',s.rewards)}
+    </div>
+    ${(s.scenes||[]).length?`<div style="margin-top:10px"><div style="font-size:9px;letter-spacing:.16em;text-transform:uppercase;color:#7a7060;font-weight:700;margin-bottom:8px">🎬 Cenas</div>${(s.scenes||[]).map((sc,i)=>{const col=SCENE_COLORS[sc.type]||'#b8860b';const ic=SCENE_ICONS[sc.type]||'🎬';return`<div style="background:#0f0e0c;border:1px solid #2c2820;border-left:3px solid ${col};border-radius:2px;padding:8px 12px;margin-bottom:6px"><div style="display:flex;align-items:center;gap:8px;margin-bottom:${sc.description?'5px':'0'}"><span style="font-size:10px;font-weight:700;color:${col};font-family:monospace">C${String(i+1).padStart(2,'0')}</span><span style="color:#ede8dc;font-size:13px;font-weight:700;flex:1">${esc(sc.name||'Sem nome')}</span><span style="font-size:9px;padding:1px 6px;border-radius:2px;background:${col}22;border:1px solid ${col}44;color:${col};text-transform:uppercase">${ic} ${esc(sc.type)}</span></div>${sc.description?`<div style="color:#c0b8b0;font-size:12px;line-height:1.6;font-family:Georgia,serif">${nl(sc.description)}</div>`:''}</div>`}).join('')}</div>`:''}
+    ${s.clues?.length?`<div style="margin-top:10px"><div style="font-size:9px;letter-spacing:.16em;text-transform:uppercase;color:#7a7060;font-weight:700;margin-bottom:6px">🔍 Pistas</div>${s.clues.map(cl=>{const cc=({'Física':'#b8860b','Testemunhal':'#276749','Ocultista':'#7c3aed','Documental':'#0e7490','Tecnológica':'#6b7280'})[cl.type||'Física']||'#b8860b';return`<div style="display:flex;gap:8px;padding:4px 0;border-bottom:1px solid #1c1a16;align-items:flex-start"><span style="color:${cl.found?'#4ade80':'#7a7060'};font-size:12px;flex-shrink:0;margin-top:2px">${cl.found?'✓':'○'}</span><span style="display:inline-block;padding:1px 5px;border-radius:2px;font-size:9px;background:${cc}22;border:1px solid ${cc}44;color:${cc};text-transform:uppercase;flex-shrink:0;margin-top:2px">${esc(cl.type||'Física')}</span><span style="color:${cl.found?'#7a7060':'#c8c0b8'};font-size:12px;text-decoration:${cl.found?'line-through':'none'}">${esc(cl.text)}</span></div>`}).join('')}</div>`:''}
+    ${s.hook?`<div style="margin-top:10px;padding:8px 12px;background:#0e749015;border:1px solid #0e749033;border-radius:2px"><div style="font-size:9px;color:#67e8f9;letter-spacing:.1em;text-transform:uppercase;margin-bottom:3px">🪝 Gancho para Próxima Sessão</div><div style="color:#a5f3fc;font-size:12px;line-height:1.6">${nl(s.hook)}</div></div>`:''}
+    ${s.notes?`<div style="margin-top:10px;padding:8px 12px;background:#b8860b10;border:1px solid #b8860b33;border-radius:2px"><div style="font-size:9px;color:#b8860b;letter-spacing:.1em;text-transform:uppercase;margin-bottom:3px">📝 Notas do Mestre</div><div style="color:#d4b26a;font-size:12px;line-height:1.6">${nl(s.notes)}</div></div>`:''}
+    ${s.quicknotes?`<div style="margin-top:10px;padding:8px 12px;background:#c0392b0a;border:1px solid #c0392b22;border-radius:2px"><div style="font-size:9px;color:#c0392b;letter-spacing:.1em;text-transform:uppercase;margin-bottom:3px">✏️ Notas Rápidas</div><div style="color:#d6c0b8;font-size:12px;line-height:1.6;white-space:pre-wrap">${esc(s.quicknotes)}</div></div>`:''}
+  </div>
+</div>`).join('')}` : '';
+
+  const notes = c.notes ? `
+${sc('Notas Gerais','#7a7060')}
+<div style="background:#141210;border:1px solid #2c2820;border-radius:3px;padding:16px"><div style="color:#c0b8b0;font-size:13px;line-height:1.8;font-family:Georgia,serif;white-space:pre-wrap">${esc(c.notes)}</div></div>` : '';
+
+  const html = `<!DOCTYPE html>
+<html lang="pt-BR"><head><meta charset="UTF-8"/>
+<title>${esc(c.title||'Campanha')} — Painel do Mestre RPG</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;900&family=Share+Tech+Mono&display=swap" rel="stylesheet"/>
+<style>
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{background:#0c0b09;color:#d6d0c4;font-family:'Share Tech Mono','Courier New',monospace;-webkit-print-color-adjust:exact;print-color-adjust:exact}
+  .wrap{max-width:760px;margin:0 auto;padding:0 40px 60px}
+
+  /* running header on every page except cover */
+  @media print {
+    @page { size:A4; margin:14mm 12mm 14mm 12mm }
+    @page :first { margin:0 }
+    body { background:#0c0b09 !important; color:#d6d0c4 !important }
+    * { -webkit-print-color-adjust:exact !important; print-color-adjust:exact !important; color-adjust:exact !important }
+    .page-header { display:flex !important }
+    .sess-block { page-break-before:auto; page-break-inside:avoid }
+    .sess-block.big { page-break-inside:auto }
+  }
+  .page-header {
+    display:none;
+    position:running(header);
+    border-bottom:1px solid #2c2820;
+    padding:6px 0 10px;
+    margin-bottom:20px;
+    justify-content:space-between;
+    align-items:center;
+  }
+  .page-header-title { font-family:'Playfair Display',Georgia,serif; font-size:11px; color:#7a7060; letter-spacing:.04em }
+  .page-header-mark  { font-size:10px; color:#302c24; letter-spacing:.1em; text-transform:uppercase }
+
+  /* index */
+  .index-table { width:100%; border-collapse:collapse; margin-bottom:6px }
+  .index-table td { padding:6px 0; border-bottom:1px solid #1c1a16; font-size:12px; vertical-align:top }
+  .index-table td:first-child { color:#c0392b; font-weight:700; width:40px; font-family:'Share Tech Mono',monospace }
+  .index-table td:nth-child(2) { color:#ede8dc; flex:1 }
+  .index-table td:last-child { color:#7a7060; text-align:right; font-size:11px; white-space:nowrap; padding-left:12px }
+</style></head><body>
+
+<div class="page-header">
+  <span class="page-header-title">☠ ${esc(c.title||'Campanha')}</span>
+  <span class="page-header-mark">Painel do Mestre RPG — Dossiê</span>
+</div>
+
+${cover}
+<div class="wrap">
+
+  ${(c.sessions_data||[]).length > 1 ? `
+  ${sc('Índice de Sessões','#302c24')}
+  <table class="index-table">
+    ${c.sessions_data.map(s=>`<tr>
+      <td>${String(s.number).padStart(2,'0')}</td>
+      <td>${esc(s.title||'Sem título')}</td>
+      <td>${pill(s.status||'Pendente',stColor(s.status))}</td>
+    </tr>`).join('')}
+  </table>` : ''}
+
+  ${anta}${npcs}${locs}${items}
+
+  ${c.sessions_data.length ? `
+  ${sc('Sessões','#c0392b')}
+  ${c.sessions_data.map(s=>{
+    const big = (s.scenes||[]).length > 3 || (s.clues||[]).length > 4;
+    return `<div class="sess-block ${big?'big':''}" style="background:#141210;border:1px solid #2c2820;border-radius:3px;margin-bottom:20px;overflow:hidden">
+    <div style="background:linear-gradient(135deg,#1a1814,#c0392b12);padding:14px 18px;display:flex;align-items:center;gap:14px;border-bottom:1px solid #302c24">
+      <div style="width:42px;height:42px;border-radius:2px;background:#c0392b22;border:1px solid #c0392b44;display:flex;align-items:center;justify-content:center;color:#c0392b;font-size:16px;font-weight:700;font-family:'Share Tech Mono',monospace;flex-shrink:0">${String(s.number).padStart(2,'0')}</div>
+      <div style="flex:1">
+        <div style="font-family:'Playfair Display',Georgia,serif;font-size:18px;font-weight:700;color:#ede8dc;line-height:1.2">${esc(s.title||'Sem título')}</div>
+      </div>
+      ${pill(s.status||'Pendente',stColor(s.status))}
+    </div>
+    <div style="padding:16px 18px">
+      ${s.opening?`<div style="background:#c0392b10;border:1px solid #c0392b33;border-left:3px solid #c0392b;border-radius:2px;padding:12px 16px;margin-bottom:14px"><div style="font-size:9px;color:#c0392b;letter-spacing:.1em;text-transform:uppercase;margin-bottom:5px">🎬 Abertura — leia em voz alta</div><div style="color:#d6c0b8;font-size:13px;line-height:1.8;font-family:Georgia,serif;font-style:italic">${nl(s.opening)}</div></div>`:''}
+      ${s.synopsis?`${block('Sinopse',s.synopsis)}`:''}
+      ${s.objectives?`${block('Objetivos dos Agentes',s.objectives)}`:''}
+      ${(s.scenes||[]).length?`
+        <div style="margin-bottom:12px">
+          <div style="font-size:9px;letter-spacing:.16em;text-transform:uppercase;color:#7a7060;font-weight:700;margin-bottom:8px">🎬 Cenas</div>
+          ${(s.scenes||[]).map((sc2,i)=>{const col=SCENE_COLORS[sc2.type]||'#b8860b';const ic=SCENE_ICONS[sc2.type]||'🎬';return`<div style="background:#0f0e0c;border:1px solid #2c2820;border-left:3px solid ${col};border-radius:2px;padding:10px 12px;margin-bottom:6px"><div style="display:flex;align-items:center;gap:8px;margin-bottom:${sc2.description?'6px':'0'}"><span style="font-size:10px;font-weight:700;color:${col};font-family:monospace;flex-shrink:0">C${String(i+1).padStart(2,'00')}</span><span style="color:#ede8dc;font-size:13px;font-weight:700;flex:1">${esc(sc2.name||'Sem nome')}</span><span style="font-size:9px;padding:2px 7px;border-radius:2px;background:${col}22;border:1px solid ${col}44;color:${col};text-transform:uppercase;flex-shrink:0">${ic} ${esc(sc2.type)}</span></div>${sc2.description?`<div style="color:#c0b8b0;font-size:12px;line-height:1.7;font-family:Georgia,serif">${nl(sc2.description)}</div>`:''}</div>`}).join('')}
+        </div>` : ''}
+      ${(s.clues||[]).length?`
+        <div style="margin-bottom:12px">
+          <div style="font-size:9px;letter-spacing:.16em;text-transform:uppercase;color:#7a7060;font-weight:700;margin-bottom:8px">🔍 Pistas</div>
+          ${s.clues.map(cl=>{const cc=({'Física':'#b8860b','Testemunhal':'#276749','Ocultista':'#7c3aed','Documental':'#0e7490','Tecnológica':'#6b7280'})[cl.type||'Física']||'#b8860b';return`<div style="display:flex;gap:8px;padding:5px 0;border-bottom:1px solid #1c1a16;align-items:flex-start"><span style="color:${cl.found?'#4ade80':'#7a7060'};font-size:13px;flex-shrink:0;margin-top:1px">${cl.found?'✓':'○'}</span><span style="display:inline-block;padding:1px 6px;border-radius:2px;font-size:9px;background:${cc}22;border:1px solid ${cc}44;color:${cc};text-transform:uppercase;flex-shrink:0;margin-top:2px">${esc(cl.type||'Física')}</span><span style="color:${cl.found?'#7a7060':'#c8c0b8'};font-size:13px;line-height:1.5;text-decoration:${cl.found?'line-through':'none'};margin-left:2px">${esc(cl.text)}</span></div>`}).join('')}
+        </div>` : ''}
+      ${s.rewards?`${block('Recompensas / Consequências',s.rewards)}`:''}
+      ${s.hook?`<div style="padding:10px 14px;background:#0e749015;border:1px solid #0e749033;border-radius:2px;margin-bottom:10px"><div style="font-size:9px;color:#67e8f9;letter-spacing:.1em;text-transform:uppercase;margin-bottom:4px">🪝 Gancho para Próxima Sessão</div><div style="color:#a5f3fc;font-size:12px;line-height:1.6">${nl(s.hook)}</div></div>`:''}
+      ${s.notes?`<div style="padding:10px 14px;background:#b8860b10;border:1px solid #b8860b33;border-radius:2px"><div style="font-size:9px;color:#b8860b;letter-spacing:.1em;text-transform:uppercase;margin-bottom:4px">📝 Notas do Mestre</div><div style="color:#d4b26a;font-size:12px;line-height:1.6">${nl(s.notes)}</div></div>`:''}
+    </div>
+  </div>`;
+  }).join('')}` : ''}
+
+  ${notes}
+</div>
+</body></html>`;
+
+  const w = window.open('','_blank','width=900,height=700');
+  if (!w) { showToast('Habilite pop-ups para exportar PDF.','err'); return; }
+  w.document.write(html);
+  w.document.close();
+  w.onload = () => setTimeout(() => w.print(), 500);
+}
+
+/* ═══════════════════════════════════════
+   LOCATIONS WITH ROOMS & ELEMENTS
+═══════════════════════════════════════ */
+const ROOM_ICONS = {sala:'🛋',quarto:'🛏',cozinha:'🍳',banheiro:'🚿',jardim:'🌿',garagem:'🚗',corredor:'🚪',porao:'🕯',sotao:'🕷',escritorio:'💼',laboratorio:'⚗️',deposito:'📦',outro:'📍'};
+const ITEM_ICONS = {objeto:'📦',pista:'🔍',perigo:'⚠️',npc:'👤',passagem:'🚪',paranormal:'👁',nota:'📝'};
+const ITEM_COLORS= {objeto:'#7a7060',pista:'#b8860b',perigo:'#c0392b',npc:'#276749',passagem:'#0e7490',paranormal:'#7c3aed',nota:'#4a4440'};
+
+function blankRoom(n){return{id:uid(),name:'',type:'sala',description:'',atmosphere:'',secret:'',danger:'Sem Perigo',items:[],_open:false};}
+function blankElement(){return{id:uid(),name:'',cat:'objeto',desc:'',secret:''};}
+
+// ── Form: location card with rooms ─────────────────────────────
+function renderLocCard(l, idx) {
+  const open = idx===0;
+  const roomsHtml = (l.rooms||[]).map((r,ri)=>renderRoomForm(l.id,r,ri)).join('');
+  return `
+  <div class="entry-card" id="lc-${l.id}">
+    <div class="entry-head" onclick="toggleEntry('lb-${l.id}','la-${l.id}')">
+      <span class="entry-arrow" id="la-${l.id}" style="transform:${open?'rotate(90deg)':'rotate(0)'}">▶</span>
+      <div style="flex:1;min-width:0">
+        <div style="color:#ede8dc;font-size:13px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">${esc(l.name)||'<em style="color:#7a7060">Sem nome</em>'}</div>
+        ${l.type?`<div style="color:#7a7060;font-size:11px;margin-top:2px">${esc(l.type)} · ${(l.rooms||[]).length} cômodo${(l.rooms||[]).length!==1?'s':''}</div>`:''}
+      </div>
+      ${dangerPill(l.danger)}
+      <button class="btn-del" onclick="event.stopPropagation();delEntry('locations','${l.id}')">✕</button>
+    </div>
+    <div class="entry-body" id="lb-${l.id}" style="display:${open?'block':'none'}">
+      <div class="grid2" style="margin-bottom:16px">
+        ${fieldHtml('Nome','<input value="'+esc(l.name)+'" oninput="setEntryField(\'locations\',\''+l.id+'\',\'name\',this.value)" placeholder="Ex: Casa do Augusto"/>')}
+        ${fieldHtml('Tipo','<input value="'+esc(l.type)+'" oninput="setEntryField(\'locations\',\''+l.id+'\',\'type\',this.value)" placeholder="Ex: Residência, Fábrica"/>')}
+        <div class="span2">${fieldHtml('Descrição Geral','<textarea rows="3" oninput="setEntryField(\'locations\',\''+l.id+'\',\'description\',this.value)" placeholder="Aparência externa, atmosfera, histórico...">'+esc(l.description)+'</textarea>')}</div>
+        <div class="span2">${fieldHtml('Segredo','<textarea rows="2" oninput="setEntryField(\'locations\',\''+l.id+'\',\'secret\',this.value)" placeholder="O que só o mestre sabe...">'+esc(l.secret)+'</textarea>','(só o mestre vê)')}</div>
+        ${fieldHtml('Nível de Perigo','<select onchange="setEntryField(\'locations\',\''+l.id+'\',\'danger\',this.value)">'+['Baixo','Médio','Alto','Extremo'].map(d=>`<option${d===l.danger?' selected':''}>${d}</option>`).join('')+'</select>')}
+      </div>
+      <div style="font-size:10px;letter-spacing:.18em;text-transform:uppercase;color:#7a7060;font-weight:700;margin-bottom:10px;display:flex;align-items:center;gap:8px">Cômodos <span style="flex:1;height:1px;background:#302c24;display:block"></span></div>
+      <div id="rooms-${l.id}">${roomsHtml}</div>
+      <button class="btn-add" onclick="addRoom('${l.id}')">+ Adicionar Cômodo</button>
+    </div>
+  </div>`;
+}
+
+function renderRoomForm(locId, r, idx) {
+  const icon = ROOM_ICONS[r.type]||'📍';
+  const open = r._open || idx===0;
+  const itemsHtml = (r.items||[]).map(it=>renderElementForm(locId,r.id,it)).join('');
+  return `
+  <div style="border:1px solid #2c2820;border-radius:2px;background:#0f0e0c;margin-bottom:8px;overflow:hidden" id="rf-${r.id}">
+    <div style="display:flex;align-items:center;gap:8px;padding:8px 12px;cursor:pointer;background:#141210" onclick="toggleEntry('rb-${r.id}','ra-${r.id}')">
+      <span id="ra-${r.id}" style="color:#7a7060;font-size:10px;transition:transform .2s;display:inline-block;transform:${open?'rotate(90deg)':'rotate(0)'}">▶</span>
+      <span style="font-size:16px">${icon}</span>
+      <span style="color:#ede8dc;font-size:13px;flex:1">${esc(r.name)||'<em style="color:#7a7060">Novo cômodo</em>'}</span>
+      <span style="color:#7a7060;font-size:11px">${(r.items||[]).length} elem.</span>
+      <button class="btn-del" style="width:22px;height:22px;font-size:12px" onclick="event.stopPropagation();delRoom('${locId}','${r.id}')">✕</button>
+    </div>
+    <div id="rb-${r.id}" style="display:${open?'block':'none'};padding:12px">
+      <div class="grid2">
+        ${fieldHtml('Nome','<input value="'+esc(r.name)+'" oninput="setRoomField(\''+locId+'\',\''+r.id+'\',\'name\',this.value)" placeholder="Ex: Sala de Estar"/>')}
+        ${fieldHtml('Tipo','<select onchange="setRoomField(\''+locId+'\',\''+r.id+'\',\'type\',this.value)">'+Object.entries(ROOM_ICONS).map(([k,v])=>`<option value="${k}"${k===r.type?' selected':''}>${v} ${k.charAt(0).toUpperCase()+k.slice(1)}</option>`).join('')+'</select>')}
+        <div class="span2">${fieldHtml('Descrição','<textarea rows="3" oninput="setRoomField(\''+locId+'\',\''+r.id+'\',\'description\',this.value)" placeholder="O que os agentes veem ao entrar...">'+esc(r.description)+'</textarea>')}</div>
+        ${fieldHtml('Atmosfera / Sensação','<input value="'+esc(r.atmosphere)+'" oninput="setRoomField(\''+locId+'\',\''+r.id+'\',\'atmosphere\',this.value)" placeholder="Ex: Cheiro de mofo, silêncio opressivo..."/>')}
+        ${fieldHtml('Nível de Perigo','<select onchange="setRoomField(\''+locId+'\',\''+r.id+'\',\'danger\',this.value)">'+['Sem Perigo','Baixo','Médio','Alto','Extremo'].map(d=>`<option${d===r.danger?' selected':''}>${d}</option>`).join('')+'</select>')}
+        <div class="span2">${fieldHtml('Segredo','<textarea rows="2" oninput="setRoomField(\''+locId+'\',\''+r.id+'\',\'secret\',this.value)" placeholder="O que está escondido aqui?">'+esc(r.secret)+'</textarea>','(só o mestre vê)')}</div>
+      </div>
+      <div style="font-size:9px;letter-spacing:.16em;text-transform:uppercase;color:#7a7060;font-weight:700;margin:10px 0 8px">Elementos do Cômodo</div>
+      <div id="elems-${r.id}">${itemsHtml}</div>
+      <button class="btn-add" style="margin-top:4px" onclick="addElement('${locId}','${r.id}')">+ Adicionar Elemento</button>
+    </div>
+  </div>`;
+}
+
+function renderElementForm(locId, roomId, it) {
+  const ic = ITEM_ICONS[it.cat]||'📦';
+  const col = ITEM_COLORS[it.cat]||'#7a7060';
+  return `
+  <div style="margin-bottom:8px;padding:10px;background:#0a0908;border:1px solid #2c2820;border-radius:2px;border-left:3px solid ${col}" id="ef-${it.id}">
+    <div style="display:flex;align-items:center;justify-content:space-between;gap:6px;margin-bottom:8px">
+      <span style="font-size:14px">${ic}</span>
+      <select onchange="setElemField('${locId}','${roomId}','${it.id}','cat',this.value)" style="flex:1;font-size:11px;padding:5px 8px">
+        ${Object.entries(ITEM_ICONS).map(([k,v])=>`<option value="${k}"${k===it.cat?' selected':''}>${v} ${k.charAt(0).toUpperCase()+k.slice(1)}</option>`).join('')}
+      </select>
+      <button class="btn-del" style="flex-shrink:0" onclick="delElement('${locId}','${roomId}','${it.id}')">✕</button>
+    </div>
+    <input value="${esc(it.name)}" oninput="setElemField('${locId}','${roomId}','${it.id}','name',this.value)" placeholder="Nome do elemento" style="margin-bottom:6px"/>
+    <input value="${esc(it.desc)}" oninput="setElemField('${locId}','${roomId}','${it.id}','desc',this.value)" placeholder="Descrição..." style="margin-bottom:4px"/>
+    <input value="${esc(it.secret)}" oninput="setElemField('${locId}','${roomId}','${it.id}','secret',this.value)" placeholder="🔒 Info oculta (só mestre)..." style="font-size:11px;border-color:#7f1d1d55"/>
+  </div>`;
+}
+
+// ── Detail view: location with rooms ──────────────────────────
+function renderLocDetailCard(l) {
+  const rooms = l.rooms||[];
+  const dangerColors={'Sem Perigo':'#7a7060','Baixo':'#276749','Médio':'#b8860b','Alto':'#e65c00','Extremo':'#c0392b'};
+  const totalElems = rooms.reduce((a,r)=>a+(r.items||[]).length,0);
+  return `
+  <div class="loc-card" style="margin-bottom:14px">
+    <div style="display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:10px;flex-wrap:wrap;gap:8px">
+      <div>
+        <div class="serif ink" style="font-size:17px;font-weight:700">${esc(l.name)}</div>
+        ${l.type?`<span class="muted" style="font-size:11px;letter-spacing:.08em;text-transform:uppercase">${esc(l.type)}</span>`:''}
+      </div>
+      <div style="display:flex;gap:8px;align-items:center;flex-wrap:wrap">
+        ${dangerPill(l.danger)}
+        <span class="muted" style="font-size:11px">${rooms.length} cômodo${rooms.length!==1?'s':''} · ${totalElems} elem.</span>
+      </div>
+    </div>
+    ${l.description?`<p class="body-text" style="margin-bottom:${l.secret?'10px':'12px'}">${nl(l.description)}</p>`:''}
+    ${l.secret?`<div class="secret-box" style="margin-bottom:12px"><div style="font-size:9px;color:#c0392b;letter-spacing:.1em;text-transform:uppercase;margin-bottom:4px">🔒 Segredo</div><p style="color:#c0a0a0;font-size:12px;line-height:1.6;margin:0">${nl(l.secret)}</p></div>`:''}
+    ${rooms.length===0?`<div style="color:#4a4440;font-size:12px;text-align:center;padding:12px;border:1px dashed #302c24;border-radius:2px">Nenhum cômodo cadastrado</div>`:
+      `<div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:10px">
+        ${rooms.map(r=>{
+          const ic=ROOM_ICONS[r.type]||'📍';
+          const dc=dangerColors[r.danger]||'#7a7060';
+          return `
+          <div style="background:#0f0e0c;border:1px solid #2c2820;border-left:3px solid ${dc};border-radius:2px;overflow:hidden">
+            <div style="padding:10px 12px;cursor:pointer;display:flex;align-items:center;gap:8px" onclick="toggleEntry('rd-${r.id}','ra2-${r.id}')">
+              <span id="ra2-${r.id}" style="color:#7a7060;font-size:10px;display:inline-block;transition:transform .2s;transform:${r._open?'rotate(90deg)':'rotate(0)'}">▶</span>
+              <span style="font-size:16px">${ic}</span>
+              <div style="flex:1;min-width:0">
+                <div style="color:#ede8dc;font-size:13px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">${esc(r.name)||'Sem nome'}</div>
+                <div style="color:${dc};font-size:10px;text-transform:uppercase;letter-spacing:.06em">${r.type} · ${r.danger}</div>
+              </div>
+              <span style="color:#7a7060;font-size:11px;flex-shrink:0">${(r.items||[]).length} elem.</span>
+            </div>
+            <div id="rd-${r.id}" style="display:${r._open?'block':'none'};padding:0 12px 12px">
+              ${r.description?`<p class="body-text" style="margin-bottom:8px">${nl(r.description)}</p>`:''}
+              ${r.atmosphere?`<div style="color:#7a7060;font-size:12px;font-style:italic;padding:6px 8px;border-left:2px solid #302c24;margin-bottom:8px">🌫 ${esc(r.atmosphere)}</div>`:''}
+              ${r.secret?`<div class="secret-box" style="margin-bottom:8px"><div style="font-size:9px;color:#c0392b;letter-spacing:.1em;text-transform:uppercase;margin-bottom:3px">🔒 Segredo</div><p style="color:#c0a0a0;font-size:12px;line-height:1.5;margin:0">${nl(r.secret)}</p></div>`:''}
+              ${(r.items||[]).length===0?`<div style="color:#4a4440;font-size:12px">Nenhum elemento.</div>`:
+                (r.items||[]).map(it=>{
+                  const ic2=ITEM_ICONS[it.cat]||'📦'; const col2=ITEM_COLORS[it.cat]||'#7a7060';
+                  return `<div style="display:flex;gap:8px;align-items:flex-start;padding:6px 0;border-bottom:1px solid #1c1a16">
+                    <span style="font-size:13px;flex-shrink:0">${ic2}</span>
+                    <div style="flex:1">
+                      <div style="color:#ede8dc;font-size:12px;font-weight:700">${esc(it.name)}</div>
+                      ${it.desc?`<div style="color:#9a9088;font-size:12px;line-height:1.5">${nl(it.desc)}</div>`:''}
+                      ${it.secret?`<div style="color:#c0392b;font-size:11px;margin-top:2px">🔒 ${esc(it.secret)}</div>`:''}
+                    </div>
+                    <span style="font-size:9px;padding:1px 6px;border-radius:2px;background:${col2}22;border:1px solid ${col2}44;color:${col2};text-transform:uppercase;letter-spacing:.06em;flex-shrink:0">${it.cat}</span>
+                  </div>`;
+                }).join('')}
+            </div>
+          </div>`;
+        }).join('')}
+      </div>`}
+  </div>`;
+}
+
+// ── Location/Room/Element mutations ───────────────────────────
+function addLoc() {
+  saveFormState();
+  formData.locations.push({id:uid(),name:'',type:'',description:'',secret:'',danger:'Baixo',rooms:[]});
+  render();
+}
+function addRoom(locId) {
+  const l = formData.locations.find(x=>x.id===locId);
+  if (!l) return;
+  if (!l.rooms) l.rooms=[];
+  const r = blankRoom();
+  r._open = true;
+  l.rooms.push(r);
+  const container = document.getElementById('rooms-'+locId);
+  if (container) {
+    container.innerHTML = l.rooms.map((rm,ri)=>renderRoomForm(locId,rm,ri)).join('');
+  }
+}
+function delRoom(locId, roomId) {
+  const l = formData.locations.find(x=>x.id===locId);
+  if (!l) return;
+  l.rooms = (l.rooms||[]).filter(r=>r.id!==roomId);
+  const el = document.getElementById('rf-'+roomId);
+  if (el) el.remove();
+}
+function setRoomField(locId, roomId, field, val) {
+  const l = formData.locations.find(x=>x.id===locId);
+  const r = (l?.rooms||[]).find(x=>x.id===roomId);
+  if (r) r[field] = val;
+}
+function addElement(locId, roomId) {
+  const l = formData.locations.find(x=>x.id===locId);
+  const r = (l?.rooms||[]).find(x=>x.id===roomId);
+  if (!r) return;
+  if (!r.items) r.items=[];
+  r.items.push(blankElement());
+  const container = document.getElementById('elems-'+roomId);
+  if (container) {
+    container.innerHTML = r.items.map(it=>renderElementForm(locId,roomId,it)).join('');
+  }
+}
+function setElemField(locId, roomId, itemId, field, val) {
+  const l = formData.locations.find(x=>x.id===locId);
+  const r = (l?.rooms||[]).find(x=>x.id===roomId);
+  const it = (r?.items||[]).find(x=>x.id===itemId);
+  if (it) it[field] = val;
+}
+function delElement(locId, roomId, itemId) {
+  const l = formData.locations.find(x=>x.id===locId);
+  const r = (l?.rooms||[]).find(x=>x.id===roomId);
+  if (!r) return;
+  r.items = (r.items||[]).filter(x=>x.id!==itemId);
+  const el = document.getElementById('ef-'+itemId);
+  if (el) el.remove();
+}
+
+/* ═══════════════════════════════════════
+   TOAST
+═══════════════════════════════════════ */
+let _toastT;
+function showToast(msg, type='ok') {
+  clearTimeout(_toastT);
+  let el = document.getElementById('_toast');
+  if (!el) { el=document.createElement('div'); el.id='_toast'; el.className='toast'; document.body.appendChild(el); }
+  el.textContent = msg;
+  el.style.background = type==='err' ? '#7f1d1d' : '#1a2e1a';
+  el.style.border = '1px solid '+(type==='err'?'#c0392b':'#276749');
+  el.style.color = type==='err' ? '#fca5a5' : '#86efac';
+  el.style.display = 'block';
+  _toastT = setTimeout(() => { el.style.display='none'; }, 2400);
+}
+
+/* ═══════════════════════════════════════
+   DRAWER & FAB
+═══════════════════════════════════════ */
+function openDrawer() {
+  document.getElementById('drawer').classList.add('open');
+  document.getElementById('drawer-overlay').classList.add('open');
+  // update drawer count
+  const dc = document.getElementById('drawer-count');
+  if (dc) dc.textContent = camps.length || '';
+}
+function closeDrawer() {
+  document.getElementById('drawer').classList.remove('open');
+  document.getElementById('drawer-overlay').classList.remove('open');
+}
+function updateDrawerItems() {
+  const editEl = document.getElementById('drawer-edit');
+  const pdfEl  = document.getElementById('drawer-pdf');
+  const fab    = document.getElementById('fab-btn');
+  if (editEl) editEl.style.display = (view==='detail') ? 'flex' : 'none';
+  if (pdfEl)  pdfEl.style.display  = (view==='detail') ? 'flex' : 'none';
+  // hide FAB when in form view
+  if (fab) fab.style.display = (view==='form') ? 'none' : '';
+  // hide FAB when already in list with empty state
+  if (fab && view==='list') fab.style.display = '';
+}
+
+/* ═══════════════════════════════════════
+   PWA — SERVICE WORKER + INSTALL PROMPT
+═══════════════════════════════════════ */
+let deferredInstallPrompt = null;
+
+if ('serviceWorker' in navigator) {
+  window.addEventListener('load', () => {
+    navigator.serviceWorker.register('/sw.js')
+      .then(reg => {
+        console.log('SW registrado:', reg.scope);
+        // Verifica update disponível
+        reg.addEventListener('updatefound', () => {
+          const newWorker = reg.installing;
+          newWorker.addEventListener('statechange', () => {
+            if (newWorker.state === 'installed' && navigator.serviceWorker.controller) {
+              showToast('Nova versão disponível! Recarregue o app.', 'ok');
+            }
+          });
+        });
+      })
+      .catch(err => console.warn('SW falhou:', err));
+  });
+}
+
+// Captura o evento de instalação do PWA
+window.addEventListener('beforeinstallprompt', e => {
+  e.preventDefault();
+  deferredInstallPrompt = e;
+  // Mostra botão de instalar no banner se ainda não instalado
+  const btn = document.getElementById('pwa-install-btn');
+  if (btn) btn.style.display = 'flex';
+});
+
+window.addEventListener('appinstalled', () => {
+  deferredInstallPrompt = null;
+  showToast('App instalado com sucesso!');
+});
+
+function installPWA() {
+  if (!deferredInstallPrompt) {
+    showToast('Para instalar: use o menu do navegador → "Adicionar à tela inicial"');
+    return;
+  }
+  deferredInstallPrompt.prompt();
+  deferredInstallPrompt.userChoice.then(choice => {
+    if (choice.outcome === 'accepted') showToast('Instalando o app...');
+    deferredInstallPrompt = null;
+  });
+}
+
+/* ═══════════════════════════════════════
+   INIT
+═══════════════════════════════════════ */
+render();
+</script>
+</body>
+</html>
